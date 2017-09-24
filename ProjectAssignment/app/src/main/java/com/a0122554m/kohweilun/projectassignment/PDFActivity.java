@@ -21,7 +21,11 @@ public class PDFActivity extends Activity{
 
         fragmentTransaction = fragmentManager.beginTransaction();
         Fragment pdfFragment = new PDFFragment();
+        Bundle args = new Bundle();
+        args.putString("fileName", "lesson01_introduction_v9.pdf");
+        pdfFragment.setArguments(args);
         fragmentTransaction.add(R.id.fragmentforpdf, pdfFragment);
         fragmentTransaction.commit();
     }
+
 }

@@ -25,59 +25,25 @@ import java.io.InputStream;
  * {@link PdfRenderer} to render PDF pages as
  * {@link Bitmap}s.
  */
-public class PDFFragment extends Fragment implements View.OnClickListener {
+public class PDFFragment extends Fragment{
 
-    /**
-     * Key string for saving the state of current page index.
-     */
     private static final String STATE_CURRENT_PAGE_INDEX = "current_page_index";
-
-    /**
-     * The filename of the PDF.
-     */
-    private static final String FILENAME = "lesson01_introduction_v9.pdf";
-
-    /**
-     * File descriptor of the PDF.
-     */
+    private String FILENAME = "";
     private ParcelFileDescriptor mFileDescriptor;
-
-    /**
-     * {@link PdfRenderer} to render the PDF.
-     */
     private PdfRenderer mPdfRenderer;
-
-    /**
-     * Page that is currently shown on the screen.
-     */
     private PdfRenderer.Page mCurrentPage;
-
-    /**
-     * {@link ImageView} that shows a PDF page as a {@link Bitmap}
-     */
     private ImageView mImageView;
-
-    /**
-     * {@link Button} to move to the previous page.
-     */
     private Button mButtonPrevious;
-
-    /**
-     * {@link Button} to move to the next page.
-     */
     private Button mButtonNext;
-
-    /**
-     * PDF page index
-     */
     private int mPageIndex;
 
     public PDFFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        FILENAME = args.getString("fileName");
         return inflater.inflate(R.layout.fragment_pdf, container, false);
     }
 
@@ -89,8 +55,18 @@ public class PDFFragment extends Fragment implements View.OnClickListener {
         mButtonPrevious = view.findViewById(R.id.previous);
         mButtonNext = view.findViewById(R.id.next);
         // Bind events.
-        mButtonPrevious.setOnClickListener(this);
-        mButtonNext.setOnClickListener(this);
+        mButtonPrevious.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                showPage(mCurrentPage.getIndex() - 1);
+            }
+        });
+        mButtonNext.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                showPage(mCurrentPage.getIndex() + 1);
+            }
+        });
 
         mPageIndex = 0;
         // If there is a savedInstanceState (screen orientations, etc.), we restore the page index.
@@ -184,8 +160,7 @@ public class PDFFragment extends Fragment implements View.OnClickListener {
         // Use `openPage` to open a specific page in PDF.
         mCurrentPage = mPdfRenderer.openPage(index);
         // Important: the destination bitmap must be ARGB (not RGB).
-        Bitmap bitmap = Bitmap.createBitmap(mCurrentPage.getWidth(), mCurrentPage.getHeight(),
-                Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(mCurrentPage.getWidth(), mCurrentPage.getHeight(),Bitmap.Config.ARGB_8888);
         // Here, we render the page onto the Bitmap.
         // To render a portion of the page, use the second and third parameter. Pass nulls to get
         // the default result.
@@ -214,22 +189,6 @@ public class PDFFragment extends Fragment implements View.OnClickListener {
      */
     public int getPageCount() {
         return mPdfRenderer.getPageCount();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.previous: {
-                // Move to the previous page
-                showPage(mCurrentPage.getIndex() - 1);
-                break;
-            }
-            case R.id.next: {
-                // Move to the next page
-                showPage(mCurrentPage.getIndex() + 1);
-                break;
-            }
-        }
     }
 
 }
