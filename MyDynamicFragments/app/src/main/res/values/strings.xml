@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Dynamic Fragments</string>
+    <string name="dynamic_fragment_button">Dynamic Fragments</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="i_am_fragment_1">I am Fragment 1</string>
+    <string name="i_am_fragment_2">I am Fragment 2</string>
+    <string name="fragment_with_interface">Fragment With Interface</string>
+    <string name="test_interface">Test Interface</string>
+    <string name="broadcast_receiver">Broadcast Receiver</string>
+    <string name="send_broadcast">Send Broadcast</string>
+</resources>
