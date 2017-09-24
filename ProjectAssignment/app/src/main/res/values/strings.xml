@@ -4,4 +4,11 @@
     <!--For Facebook Login-->
     <string name="facebook_app_id">211290756075038</string>
     <string name="fb_login_protocol_scheme">fb211290756075038</string>
+
+    <!--For viewing PDF lessons-->
+    <string name="sample_lesson_list_button">Go To Sample Lessons List</string>
+    <string name="lesson_button">Sample Lesson</string>
+    <string name="title">Sample Lesson Title</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>

@@ -15,4 +15,13 @@
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp" />
 
+
+    <!-- Remove once facebook login redirect to lessons list is done. -->
+    <Button
+        android:id="@+id/sampleLessonListButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sample_lesson_list_button"
+        android:onClick="onClick_GoToLessonList"/>
+
 </LinearLayout>

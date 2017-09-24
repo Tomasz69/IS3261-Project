@@ -3,6 +3,7 @@ package com.a0122554m.kohweilun.projectassignment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -47,5 +48,10 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void onClick_GoToLessonList(View view){
+        Intent lessonListIntent = new Intent(this, LessonsList.class);
+        startActivity(lessonListIntent);
     }
 }
