@@ -13,16 +13,52 @@ public class LessonsList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_list);
 
-        Button button1 = findViewById(R.id.lessonButton);
-        Intent intent1 = new Intent(this, PDFActivity.class);
-
-        Button[] buttons = {button1};
-        Intent[] intents = {intent1};
+        String[] filesList = {
+                "lesson01_introduction.pdf",
+                "lesson02_android_intro.pdf",
+                "lesson03_sqlite.pdf",
+                "lesson04_shared_preferences.pdf",
+                "lesson05_activity_fragment.pdf",
+                "lesson06_broadcast_receiver_and_battery.pdf",
+                "lesson07_dangerous_permissions.pdf",
+                "lesson08_android_sensors_and_location_v3.pdf",
+                "lesson09_internet.pdf",
+                "lesson10_location_and_map.pdf",
+                "lesson11_qr_codes.pdf"
+        };
+        String[] titlesList = {
+                getResources().getString(R.string.lesson_button1),
+                getResources().getString(R.string.lesson_button2),
+                getResources().getString(R.string.lesson_button3),
+                getResources().getString(R.string.lesson_button4),
+                getResources().getString(R.string.lesson_button5),
+                getResources().getString(R.string.lesson_button6),
+                getResources().getString(R.string.lesson_button7),
+                getResources().getString(R.string.lesson_button8),
+                getResources().getString(R.string.lesson_button9),
+                getResources().getString(R.string.lesson_button10),
+                getResources().getString(R.string.lesson_button11)
+        };
+        Button[] buttons= {
+                findViewById(R.id.lessonButton1),
+                findViewById(R.id.lessonButton2),
+                findViewById(R.id.lessonButton3),
+                findViewById(R.id.lessonButton4),
+                findViewById(R.id.lessonButton5),
+                findViewById(R.id.lessonButton6),
+                findViewById(R.id.lessonButton7),
+                findViewById(R.id.lessonButton8),
+                findViewById(R.id.lessonButton9),
+                findViewById(R.id.lessonButton10),
+                findViewById(R.id.lessonButton11)
+        };
 
         int i;
-        for (i = 0; i < buttons.length; i++){
+        for (i = 0; i < filesList.length; i++){
             Button button = buttons[i];
-            final Intent intent = intents[i];
+            final Intent intent = new Intent(this, PDFActivity.class);
+            intent.putExtra("fileName", filesList[i]);
+            intent.putExtra("title", titlesList[i]);
             button.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {

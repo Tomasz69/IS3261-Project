@@ -12,17 +12,19 @@ public class PDFActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pdf_activity);
-        assignFragments();
+        String fileName = getIntent().getStringExtra("fileName");
+        String title = getIntent().getStringExtra("title");
+        assignFragments(fileName, title);
     }
 
-    protected void assignFragments(){
+    protected void assignFragments(String _fileName, String _title){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction;
-
         fragmentTransaction = fragmentManager.beginTransaction();
         Fragment pdfFragment = new PDFFragment();
         Bundle args = new Bundle();
-        args.putString("fileName", "lesson01_introduction_v9.pdf");
+        args.putString("fileName", _fileName);
+        args.putString("title", _title);
         pdfFragment.setArguments(args);
         fragmentTransaction.add(R.id.fragmentforpdf, pdfFragment);
         fragmentTransaction.commit();

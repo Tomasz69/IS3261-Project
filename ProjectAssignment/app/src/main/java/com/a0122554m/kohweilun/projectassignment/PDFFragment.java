@@ -29,6 +29,7 @@ public class PDFFragment extends Fragment{
 
     private static final String STATE_CURRENT_PAGE_INDEX = "current_page_index";
     private String FILENAME = "";
+    private String TITLE = "";
     private ParcelFileDescriptor mFileDescriptor;
     private PdfRenderer mPdfRenderer;
     private PdfRenderer.Page mCurrentPage;
@@ -44,6 +45,7 @@ public class PDFFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
         FILENAME = args.getString("fileName");
+        TITLE = args.getString("title");
         return inflater.inflate(R.layout.fragment_pdf, container, false);
     }
 
@@ -109,11 +111,10 @@ public class PDFFragment extends Fragment{
      * Sets up a {@link PdfRenderer} and related resources.
      */
     private void openRenderer(Context context) throws IOException {
-        // In this sample, we read a PDF from the assets directory.
+        //PDF from the assets directory copied into cache directory.
         File file = new File(context.getCacheDir(), FILENAME);
         if (!file.exists()) {
-            // Since PdfRenderer cannot handle the compressed asset file directly, we copy it into
-            // the cache directory.
+            //PdfRenderer handle file from the cache directory.
             InputStream asset = context.getAssets().open(FILENAME);
             FileOutputStream output = new FileOutputStream(file);
             final byte[] buffer = new byte[1024];
@@ -176,10 +177,11 @@ public class PDFFragment extends Fragment{
      */
     private void updateUi() {
         int index = mCurrentPage.getIndex();
+        int displayIndex = index + 1;
         int pageCount = mPdfRenderer.getPageCount();
         mButtonPrevious.setEnabled(0 != index);
         mButtonNext.setEnabled(index + 1 < pageCount);
-        getActivity().setTitle(getString(R.string.title, index + 1, pageCount));
+        getActivity().setTitle(TITLE + " (" + displayIndex + "/" + pageCount + ")");
     }
 
     /**

@@ -1,14 +1,23 @@
 <resources>
-    <string name="app_name">ProjectAssignment</string>
+    <string name="app_name">Project Assignment</string>
 
     <!--For Facebook Login-->
     <string name="facebook_app_id">211290756075038</string>
     <string name="fb_login_protocol_scheme">fb211290756075038</string>
 
     <!--For viewing PDF lessons-->
-    <string name="sample_lesson_list_button">Go To Sample Lessons List</string>
-    <string name="lesson_button">Sample Lesson</string>
-    <string name="title">Sample Lesson Title</string>
+    <string name="sample_lesson_list_button">Go To Lessons List</string>
+    <string name="lesson_button1">Course Introduction</string>
+    <string name="lesson_button2">Introduction to Android</string>
+    <string name="lesson_button3">SQLite</string>
+    <string name="lesson_button4">Shared Preferences</string>
+    <string name="lesson_button5">Activity and Fragment</string>
+    <string name="lesson_button6">Broadcast Receiver and Battery</string>
+    <string name="lesson_button7">Dangerous Permission</string>
+    <string name="lesson_button8">Android Sensors and Location</string>
+    <string name="lesson_button9">Internet</string>
+    <string name="lesson_button10">Location and Map</string>
+    <string name="lesson_button11">QR Codes</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
 </resources>
