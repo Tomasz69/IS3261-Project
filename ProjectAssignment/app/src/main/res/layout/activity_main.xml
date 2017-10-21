@@ -18,10 +18,18 @@
 
     <!-- Remove once facebook login redirect to lessons list is done. -->
     <Button
-        android:id="@+id/sampleLessonListButton"
+        android:id="@+id/LessonListButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sample_lesson_list_button"
+        android:text="@string/lesson_list_button"
         android:onClick="onClick_GoToLessonList"/>
+
+    <!-- Temporary -->
+    <Button
+        android:id="@+id/BeaconButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/beacon_button"
+        android:onClick="onClick_GoToBeaconActivity"/>
 
 </LinearLayout>

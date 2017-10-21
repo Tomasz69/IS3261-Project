@@ -38,8 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LessonsList"></activity>
-        <activity android:name=".PDFActivity"></activity>
+        <activity android:name=".LessonsList" />
+        <activity android:name=".PDFActivity" />
+        <activity android:name=".QuizBeaconActivity" />
     </application>
 
 </manifest>

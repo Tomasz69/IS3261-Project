@@ -6,7 +6,7 @@
     <string name="fb_login_protocol_scheme">fb211290756075038</string>
 
     <!--For viewing PDF lessons-->
-    <string name="sample_lesson_list_button">Go To Lessons List</string>
+    <string name="lesson_list_button">Go To Lessons List</string>
     <string name="lesson_button1">Course Introduction</string>
     <string name="lesson_button2">Introduction to Android</string>
     <string name="lesson_button3">SQLite</string>
@@ -20,4 +20,8 @@
     <string name="lesson_button11">QR Codes</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="beacon_button">Go To Beacon Activity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

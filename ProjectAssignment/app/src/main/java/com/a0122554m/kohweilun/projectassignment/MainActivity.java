@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -112,8 +113,22 @@ public class MainActivity extends Activity {
         profileTracker.stopTracking();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //to request permissions from user to enable beacon tracking
+        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+    }
+
+    /*start of temporary buttons*/
     public void onClick_GoToLessonList(View view){
         Intent lessonListIntent = new Intent(this, LessonsList.class);
         startActivity(lessonListIntent);
+    }
+
+    public void onClick_GoToBeaconActivity(View view){
+        Intent beaconIntent = new Intent(this, QuizBeaconActivity.class);
+        startActivity(beaconIntent);
     }
 }
