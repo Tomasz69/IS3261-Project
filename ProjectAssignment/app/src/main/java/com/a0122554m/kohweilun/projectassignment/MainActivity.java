@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
 
     /*start of temporary buttons*/
     public void onClick_GoToLessonList(View view){
-        Intent lessonListIntent = new Intent(this, LessonsList.class);
+        Intent lessonListIntent = new Intent(this, StaticLessonsList.class);
         startActivity(lessonListIntent);
     }
 
