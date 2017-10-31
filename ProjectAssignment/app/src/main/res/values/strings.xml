@@ -24,4 +24,11 @@
 
     <!-- List of Questions Page-->
     <string name="sample_question_button">Question 1</string>
+
+    <!--Main Page and Revision-->
+    <string name="useful_links">Useful Links</string>
+    <string name="revision">Revision</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

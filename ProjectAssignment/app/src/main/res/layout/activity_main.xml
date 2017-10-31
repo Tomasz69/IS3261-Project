@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.a0122554m.kohweilun.projectassignment.MainActivity">
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp" />
 
@@ -22,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lesson_list_button"
-        android:onClick="onClick_GoToLessonList"/>
+        android:layout_below="@+id/login_button"
+        android:onClick="onClick_GoToLessonList" />
 
     <!-- Temporary -->
     <Button
@@ -30,6 +30,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/beacon_button"
-        android:onClick="onClick_GoToBeaconActivity"/>
+        android:layout_below="@+id/LessonListButton"
+        android:onClick="onClick_GoToBeaconActivity" />
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/revision_imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src= "@drawable/revision_bluelogo"
+        android:background="@color/transparent"
+        android:layout_below="@+id/BeaconButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:onClick="onClick_GoToRevisionListActivity" />
+
+    <TextView
+        android:id="@+id/revision_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/revision"
+        android:layout_below="@+id/revision_imageButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="onClick_GoToRevisionListActivity" />
+
+    <ImageButton
+        android:id="@+id/links_imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src= "@drawable/useful_96"
+        android:background="@color/transparent"
+        android:layout_below="@+id/revision_textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:onClick="onClick_GoToLinks" />
+
+    <TextView
+        android:id="@+id/links_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/useful_links"
+        android:layout_below="@+id/links_imageButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="onClick_GoToLinks" />
+
+</RelativeLayout>

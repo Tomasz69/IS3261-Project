@@ -132,4 +132,14 @@ public class MainActivity extends Activity {
         Intent beaconIntent = new Intent(this, QuizWebAPIActivity.class);
         startActivity(beaconIntent);
     }
+
+    public void onClick_GoToRevisionListActivity(View view) {
+        Intent revisionIntent = new Intent(this, RevisionListActivity.class);
+        startActivity(revisionIntent);
+    }
+
+    public void onClick_GoToLinks(View view) {
+        Intent linksIntent = new Intent(this, LinksActivity.class);
+        startActivity(linksIntent);
+    }
 }
