@@ -41,7 +41,8 @@
         <activity android:name=".StaticLessonsList" />
         <activity android:name=".PDFActivity" />
         <activity android:name=".QuizBeaconActivity" />
-        <activity android:name=".DynamicLessonsList"></activity>
+        <activity android:name=".DynamicLessonsList" />
+        <activity android:name=".QuizWebAPIActivity"></activity>
     </application>
 
 </manifest>

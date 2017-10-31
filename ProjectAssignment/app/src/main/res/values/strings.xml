@@ -22,6 +22,6 @@
     <string name="next">Next</string>
     <string name="beacon_button">Go To Beacon Activity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- List of Questions Page-->
+    <string name="sample_question_button">Question 1</string>
 </resources>
