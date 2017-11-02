@@ -34,7 +34,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -42,10 +41,10 @@
         <activity android:name=".PDFActivity" />
         <activity android:name=".QuizBeaconActivity" />
         <activity android:name=".DynamicLessonsList" />
-        <activity android:name=".QuizWebAPIActivity"></activity>
+        <activity android:name=".QuizWebAPIActivity"/>
         <activity android:name=".LinksActivity" />
         <activity android:name=".RevisionListActivity" />
-        <activity android:name=".RevisionQuizActivity"></activity>
+        <activity android:name=".RevisionQuizActivity"/>
     </application>
 
 </manifest>

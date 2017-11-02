@@ -7,18 +7,8 @@
     android:orientation="vertical"
     tools:context="com.a0122554m.kohweilun.projectassignment.QuizWebAPIActivity">
 
-    <Button
-        android:id="@+id/SampleQuestionButton"
+    <ListView
+        android:id="@+id/questions_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sample_question_button"
-        android:onClick="onClick_GoToQuestion"
-        />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
+        android:layout_height="match_parent" />
 </LinearLayout>

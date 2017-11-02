@@ -128,8 +128,9 @@ public class MainActivity extends Activity {
     }
 
     //temporary testing
-    public void onClick_GoToBeaconActivity(View view){
+    public void onClick_GoToChallengeQuizActivity(View view){
         Intent beaconIntent = new Intent(this, QuizWebAPIActivity.class);
+        beaconIntent.putExtra("challengeQuizCode", "B34C0N");
         startActivity(beaconIntent);
     }
 
