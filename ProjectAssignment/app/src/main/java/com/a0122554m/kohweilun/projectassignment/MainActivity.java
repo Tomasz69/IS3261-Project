@@ -2,15 +2,24 @@ package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.widget.LoginButton;
 
+import java.util.Arrays;
+
 public class MainActivity extends Activity {
-//    CallbackManager callbackManager;
-//    ProfileTracker profileTracker;
+    CallbackManager callbackManager;
+    ProfileTracker profileTracker;
+    private static final String FB_SHAREDPREF_FOR_APP = "FbSharedPrefForApp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,24 +28,26 @@ public class MainActivity extends Activity {
 
         // Set up Login Button.
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-//        loginButton.setReadPermissions(Arrays.asList(
-//                "public_profile", "email", "user_birthday"));
-//
-//        FacebookSdk.sdkInitialize(this.getApplicationContext());
-//        callbackManager = CallbackManager.Factory.create();
-//
-//        profileTracker = new ProfileTracker() {
-//            @Override
-//            protected void onCurrentProfileChanged(
-//                    Profile oldProfile,
-//                    Profile currentProfile) {
-//                // App code
-//                if (oldProfile != null)
-//                    Toast.makeText(MainActivity.this, "oldProfile (name) = " + oldProfile.getName(), Toast.LENGTH_SHORT).show();
-//                if (currentProfile != null)
-//                    Toast.makeText(MainActivity.this, "currentProfile (name) = " + currentProfile.getName(), Toast.LENGTH_SHORT).show();
-//            }
-//        };
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                // App code
+                //when user clicks on log out
+                if (currentProfile == null){
+                    Toast.makeText(MainActivity.this, "FB Logout success!", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE).edit();
+                    editor.putString("email", null);
+                    editor.commit();
+                    Intent loginPage = new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(loginPage);
+
+                }
+            }
+        };
 
 //        LoginManager.getInstance().registerCallback(callbackManager,
 //                new FacebookCallback<LoginResult>() {
