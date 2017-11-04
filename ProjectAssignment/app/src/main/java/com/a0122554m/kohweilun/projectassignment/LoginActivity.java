@@ -37,9 +37,8 @@ public class LoginActivity extends Activity {
     ProfileTracker profileTracker;
 
     private static final String FB_SHAREDPREF_FOR_APP = "FbSharedPrefForApp";
-    private String[] lesson_progress_titles;
-    private int[] lesson_progress_last_seens;
-    private int[] lesson_progress_furthests;
+    private static final String PROGRESS_PREFS = "progress_state";
+    SharedPreferences progressPreferences;
 
 
     @Override
@@ -48,6 +47,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         SharedPreferences prefs = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
+        progressPreferences = getSharedPreferences(PROGRESS_PREFS, MODE_PRIVATE);
         String fb_email = prefs.getString("email", null);
 
         // Set up Login Button.
@@ -60,19 +60,10 @@ public class LoginActivity extends Activity {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 // App code
-                //log in
+                //if user is logged in, redirect to main page
                 if (currentProfile != null){
                     Intent mainPage = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(mainPage);
-                }
-                //log out
-                if (currentProfile == null){
-                    Toast.makeText(LoginActivity.this, "FB Logout success!", Toast.LENGTH_SHORT).show();
-                    Intent loginPage = new Intent(getApplicationContext(),LoginActivity.class);
-                    startActivity(loginPage);
-                    SharedPreferences.Editor editor = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE).edit();
-                    editor.putString("email", null);
-                    editor.apply();
                 }
             }
         };
@@ -95,10 +86,7 @@ public class LoginActivity extends Activity {
                                             String email = object.getString("email");
                                             String name = object.getString("name");
                                             GetUserAsyncTask getUserAsyncTask = new GetUserAsyncTask();
-                                            getUserAsyncTask.execute("http://192.168.137.1:3000/api/user/login?email=" + email + "&name=" + name);
-                                            SharedPreferences.Editor editor = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE).edit();
-                                            editor.putString("email", email);
-                                            editor.apply();
+                                            getUserAsyncTask.execute("http://192.168.137.1:3000/api/user/login?email=" + email + "&name=" + name, email);
                                         } catch (JSONException exception) {
                                             Toast.makeText(LoginActivity.this, "There is an error accessing the attributes.", Toast.LENGTH_SHORT).show();
                                         }
@@ -144,6 +132,9 @@ public class LoginActivity extends Activity {
     private class GetUserAsyncTask extends AsyncTask<String, Void, String> {
 
         public String doInBackground(String... str) {
+            SharedPreferences.Editor editor = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE).edit();
+            editor.putString("email", str[1]);
+            editor.commit();
             URL url = convertToUrl(str[0]);
             HttpURLConnection httpURLConnection = null;
             int responseCode;
@@ -176,15 +167,23 @@ public class LoginActivity extends Activity {
         public void onPostExecute(String result) {
             try {
                 JSONArray listOfLessonProgress = new JSONArray(result);
-                int numOfLessonProgress = listOfLessonProgress.length();
-                lesson_progress_titles = new String[numOfLessonProgress];
-                lesson_progress_last_seens = new int[numOfLessonProgress];
-                lesson_progress_furthests = new int[numOfLessonProgress];
+                SharedPreferences.Editor editor = progressPreferences.edit();
 
                 for (int i = 0; i < listOfLessonProgress.length(); i++) {
-                    final JSONObject lessonProgressDetails = listOfLessonProgress.getJSONObject(i);
+                    JSONObject lessonProgressDetails = listOfLessonProgress.getJSONObject(i);
                     //do shared preference stuff
+                    String fileName = lessonProgressDetails.optString("title");
+                    int lastSeen = lessonProgressDetails.optInt("last_seen_page");
+                    int furthest = lessonProgressDetails.optInt("furthest_page");
+                    System.out.println("File Name: " + fileName + "Last Seen: " + lastSeen +", Furthest: " + furthest);
+                    editor.putInt(fileName + "_LASTSEEN", lastSeen);
+                    editor.commit();
+                    editor.putInt(fileName + "_FURTHEST", furthest);
+                    editor.commit();
                 }
+
+//                Intent mainPage = new Intent(getApplicationContext(),MainActivity.class);
+//                startActivity(mainPage);
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
