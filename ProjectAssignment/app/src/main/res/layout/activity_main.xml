@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/beacon_button"
         android:layout_below="@+id/LessonListButton"
-        android:onClick="onClick_GoToBeaconActivity" />
+        android:onClick="onClick_GoToChallengeQuizActivity" />
 
     <ImageButton
         android:id="@+id/revision_imageButton"
