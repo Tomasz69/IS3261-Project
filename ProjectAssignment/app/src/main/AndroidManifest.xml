@@ -41,7 +41,7 @@
         <activity android:name=".LinksActivity" />
         <activity android:name=".RevisionListActivity" />
         <activity android:name=".RevisionQuizActivity" />
-        <activity android:name=".HighscoreActivity"></activity>
+        <activity android:name=".HighscoreActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

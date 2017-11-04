@@ -34,6 +34,9 @@
     <string name="score_num">0 / 0</string>
     <string name="text_default">Default</string>
 
+    <!--Highscore Activity-->
+    <string name="btn_back">Back</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

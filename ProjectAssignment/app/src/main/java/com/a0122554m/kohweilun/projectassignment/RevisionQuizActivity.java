@@ -1,6 +1,7 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +17,10 @@ public class RevisionQuizActivity extends Activity {
     private Button buttonChoice2;
     private Button buttonChoice3;
     private Button buttonChoice4;
-
     private String answer;
+
+    private String lesson;
+    private int max_score;
     private int score = 0;
     private int questionNumber = 0;
 
@@ -33,7 +36,12 @@ public class RevisionQuizActivity extends Activity {
         buttonChoice3 = (Button)findViewById(R.id.choice3);
         buttonChoice4 = (Button)findViewById(R.id.choice4);
 
-        revisionQuestionBank.initQuestions(getApplicationContext(), getIntent().getStringExtra("title"));
+        lesson = getIntent().getStringExtra("title");
+
+        revisionQuestionBank.initQuestions(getApplicationContext(), lesson);
+
+        max_score = revisionQuestionBank.getNumQuestions();
+
         updateQuestion();
         updateScore(score);
     }
@@ -50,6 +58,12 @@ public class RevisionQuizActivity extends Activity {
         } else {
             Toast.makeText(this, "You have successfully completed this quiz!", Toast.LENGTH_SHORT).show();
 
+            Intent intent = new Intent(this, HighscoreActivity.class);
+            intent.putExtra("lesson", lesson);
+            intent.putExtra("max_score", max_score);
+            intent.putExtra("current_score", score);
+
+            startActivity(intent);
         }
     }
 

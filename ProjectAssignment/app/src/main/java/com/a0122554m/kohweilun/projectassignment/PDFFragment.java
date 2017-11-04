@@ -75,7 +75,7 @@ public class PDFFragment extends Fragment{
             }
         });
 
-        mPageIndex = sharedPreferences.getInt(FILENAME + "_LASTSEEN", 0) - 1;
+        mPageIndex = sharedPreferences.getInt(FILENAME + "_LASTSEEN", 0);
         furthestPage = sharedPreferences.getInt(FILENAME + "_FURTHEST", 0);
         // If there is a savedInstanceState (screen orientations, etc.), we restore the page index.
         if (null != savedInstanceState) {
@@ -171,7 +171,7 @@ public class PDFFragment extends Fragment{
 //            Toast.makeText(getActivity(), "Furthest page: " + furthestPage, Toast.LENGTH_SHORT).show();
         }
 
-        updateLastSeen(index + 1);
+        updateLastSeen(index);
 //        Toast.makeText(getActivity(), "Last seen: " + (index + 1), Toast.LENGTH_SHORT).show();
 
         // Use `openPage` to open a specific page in PDF.

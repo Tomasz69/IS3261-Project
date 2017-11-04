@@ -13,14 +13,30 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/text_default"
-        android:textSize="40sp" />
+        android:textSize="40sp"
+        android:gravity="center" />
 
-    <TextView
-        android:id="@+id/currentScore"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="@string/text_default"
-        android:textSize="32sp" />
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/currentScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_default"
+            android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/currentScore"
+            android:layout_marginTop="20sp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/btn_back"
+            android:onClick="onClick_GoBackToRevisionListActivity"/>
+    </RelativeLayout>
 
 </LinearLayout>
