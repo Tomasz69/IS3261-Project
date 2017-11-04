@@ -130,15 +130,4 @@ public class QuizWebAPIActivity extends Activity {
         }
         return null;
     }
-
-//    private void onClick_GoToQuestion(int question_num){
-//        Toast.makeText(getApplicationContext(), question_ids[question_num], Toast.LENGTH_LONG).show();
-//        Intent beaconIntent = new Intent(getApplicationContext(), QuizBeaconActivity.class);
-//        beaconIntent.putExtra("id", question_ids[question_num]);
-//        beaconIntent.putExtra("title", question_titles[question_num]);
-//        beaconIntent.putExtra("answers", question_answers[question_num]);
-//        beaconIntent.putExtra("correct", question_corrects[question_num]);
-//        beaconIntent.putExtra("type", question_types[question_num]);
-//        startActivity(beaconIntent);
-//    }
 }
