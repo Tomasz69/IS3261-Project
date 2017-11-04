@@ -3,6 +3,7 @@ package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import java.io.InputStream;
  */
 public class PDFFragment extends Fragment{
 
+    public static final String PROGRESS_PREFS = "progress_state";
     private static final String STATE_CURRENT_PAGE_INDEX = "current_page_index";
     private String FILENAME = "";
     private String TITLE = "";
@@ -37,6 +39,8 @@ public class PDFFragment extends Fragment{
     private Button mButtonPrevious;
     private Button mButtonNext;
     private int mPageIndex;
+    int furthestPage = 0;
+    SharedPreferences sharedPreferences;
 
     public PDFFragment() {
     }
@@ -46,6 +50,7 @@ public class PDFFragment extends Fragment{
         Bundle args = getArguments();
         FILENAME = args.getString("fileName");
         TITLE = args.getString("title");
+        sharedPreferences = getActivity().getSharedPreferences(PROGRESS_PREFS, Context.MODE_PRIVATE);
         return inflater.inflate(R.layout.fragment_pdf, container, false);
     }
 
@@ -70,7 +75,8 @@ public class PDFFragment extends Fragment{
             }
         });
 
-        mPageIndex = 0;
+        mPageIndex = sharedPreferences.getInt(FILENAME + "_LASTSEEN", 0) - 1;
+        furthestPage = sharedPreferences.getInt(FILENAME + "_FURTHEST", 0);
         // If there is a savedInstanceState (screen orientations, etc.), we restore the page index.
         if (null != savedInstanceState) {
             mPageIndex = savedInstanceState.getInt(STATE_CURRENT_PAGE_INDEX, 0);
@@ -158,6 +164,16 @@ public class PDFFragment extends Fragment{
         if (null != mCurrentPage) {
             mCurrentPage.close();
         }
+
+        if (index > furthestPage) {
+            furthestPage = index + 1;
+            updateFurthest(furthestPage);
+//            Toast.makeText(getActivity(), "Furthest page: " + furthestPage, Toast.LENGTH_SHORT).show();
+        }
+
+        updateLastSeen(index + 1);
+//        Toast.makeText(getActivity(), "Last seen: " + (index + 1), Toast.LENGTH_SHORT).show();
+
         // Use `openPage` to open a specific page in PDF.
         mCurrentPage = mPdfRenderer.openPage(index);
         // Important: the destination bitmap must be ARGB (not RGB).
@@ -193,4 +209,16 @@ public class PDFFragment extends Fragment{
         return mPdfRenderer.getPageCount();
     }
 
+
+    public void updateLastSeen(int currentPage) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(FILENAME + "_LASTSEEN", currentPage);
+        editor.commit();
+    }
+
+    public void updateFurthest(int furthestPage) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(FILENAME + "_FURTHEST", furthestPage);
+        editor.commit();
+    }
 }

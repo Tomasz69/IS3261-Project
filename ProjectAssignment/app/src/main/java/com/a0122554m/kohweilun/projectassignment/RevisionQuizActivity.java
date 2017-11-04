@@ -33,7 +33,7 @@ public class RevisionQuizActivity extends Activity {
         buttonChoice3 = (Button)findViewById(R.id.choice3);
         buttonChoice4 = (Button)findViewById(R.id.choice4);
 
-        revisionQuestionBank.initQuestions(getApplicationContext());
+        revisionQuestionBank.initQuestions(getApplicationContext(), getIntent().getStringExtra("title"));
         updateQuestion();
         updateScore(score);
     }

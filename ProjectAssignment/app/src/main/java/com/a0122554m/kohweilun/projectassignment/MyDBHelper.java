@@ -20,6 +20,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_NAME = "RevisionQuestionBank";
     public static final String KEY_ID = "_id";
+    public static final String LESSON = "lesson";
     public static final String QUESTION = "question";
     public static final String CHOICE1 = "choice1";
     public static final String CHOICE2 = "choice2";
@@ -29,6 +30,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     private static final String SQLite_CREATE = "CREATE TABLE "
             + TABLE_NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + LESSON + " TEXT NOT NULL, "
             + QUESTION + " TEXT NOT NULL, "
             + CHOICE1 + " TEXT NOT NULL, "
             + CHOICE2 + " TEXT NOT NULL, "
@@ -53,10 +55,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public long insertQuestion(RevisionQuestion revisionQuestion) {
+    public long insertQuestion(RevisionQuestion revisionQuestion, String lesson) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(LESSON, lesson);
         values.put(QUESTION, revisionQuestion.getQuestion());
         values.put(CHOICE1, revisionQuestion.getChoice(0));
         values.put(CHOICE2, revisionQuestion.getChoice(1));
@@ -67,9 +70,15 @@ public class MyDBHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME, null, values);
     }
 
-    public List<RevisionQuestion> getAllQuestionsList() {
+    public List<RevisionQuestion> getAllQuestionsList(String lesson) {
         List<RevisionQuestion> questionList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NAME;
+        String selectQuery;
+
+        if (lesson == null) {
+            selectQuery = "SELECT * FROM " + TABLE_NAME;
+        } else {
+            selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE lesson = '" + lesson + "'";
+        }
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -96,5 +105,15 @@ public class MyDBHelper extends SQLiteOpenHelper {
         }
 
         return questionList;
+    }
+
+    public void createTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(SQLite_CREATE);
+    }
+
+    public void deleteTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(SQLite_DELETE);
     }
 }
