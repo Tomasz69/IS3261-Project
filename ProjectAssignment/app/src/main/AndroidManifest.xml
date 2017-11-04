@@ -31,13 +31,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".StaticLessonsList" />
         <activity android:name=".PDFActivity" />
         <activity android:name=".QuizBeaconActivity" />
@@ -47,6 +42,12 @@
         <activity android:name=".RevisionListActivity" />
         <activity android:name=".RevisionQuizActivity" />
         <activity android:name=".HighscoreActivity"></activity>
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
