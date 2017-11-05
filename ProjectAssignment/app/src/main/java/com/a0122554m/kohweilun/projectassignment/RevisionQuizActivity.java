@@ -20,6 +20,7 @@ public class RevisionQuizActivity extends Activity {
     private String answer;
 
     private String lesson;
+    private String fileName; //new
     private int max_score;
     private int score = 0;
     private int questionNumber = 0;
@@ -37,7 +38,7 @@ public class RevisionQuizActivity extends Activity {
         buttonChoice4 = (Button)findViewById(R.id.choice4);
 
         lesson = getIntent().getStringExtra("title");
-
+        fileName =getIntent().getStringExtra("fileName");
         revisionQuestionBank.initQuestions(getApplicationContext(), lesson);
 
         max_score = revisionQuestionBank.getNumQuestions();
@@ -60,6 +61,7 @@ public class RevisionQuizActivity extends Activity {
 
             Intent intent = new Intent(this, HighscoreActivity.class);
             intent.putExtra("lesson", lesson);
+            intent.putExtra("fileName", fileName); //new
             intent.putExtra("max_score", max_score);
             intent.putExtra("current_score", score);
 

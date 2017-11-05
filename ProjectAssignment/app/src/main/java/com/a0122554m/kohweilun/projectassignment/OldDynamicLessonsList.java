@@ -13,12 +13,12 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class DynamicLessonsList extends Activity {
+public class OldDynamicLessonsList extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lessons_list);
+        setContentView(R.layout.old_activity_dynamic_lessons_list);
 
         CustomAdapter adapter = new CustomAdapter(this);
         ListView lessonsListView = findViewById(R.id.lessonsListView);

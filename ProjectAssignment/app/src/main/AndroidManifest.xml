@@ -36,7 +36,7 @@
         <activity android:name=".StaticLessonsList" />
         <activity android:name=".PDFActivity" />
         <activity android:name=".QuizBeaconActivity" />
-        <activity android:name=".DynamicLessonsList" />
+        <activity android:name=".OldDynamicLessonsList" />
         <activity android:name=".QuizWebAPIActivity" />
         <activity android:name=".LinksActivity" />
         <activity android:name=".RevisionListActivity" />

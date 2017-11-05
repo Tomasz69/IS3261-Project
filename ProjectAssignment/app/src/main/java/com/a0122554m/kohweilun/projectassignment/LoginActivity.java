@@ -38,17 +38,16 @@ public class LoginActivity extends Activity {
 
     private static final String FB_SHAREDPREF_FOR_APP = "FbSharedPrefForApp";
     private static final String PROGRESS_PREFS = "progress_state";
-    SharedPreferences progressPreferences;
-
+    private SharedPreferences appPreferences;
+    private SharedPreferences progressPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        SharedPreferences prefs = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
+        appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
         progressPreferences = getSharedPreferences(PROGRESS_PREFS, MODE_PRIVATE);
-        String fb_email = prefs.getString("email", null);
+        String fb_email = appPreferences.getString("email", null);
 
         // Set up Login Button.
         LoginButton loginButton = findViewById(R.id.login_page_button);
@@ -166,24 +165,36 @@ public class LoginActivity extends Activity {
 
         public void onPostExecute(String result) {
             try {
-                JSONArray listOfLessonProgress = new JSONArray(result);
-                SharedPreferences.Editor editor = progressPreferences.edit();
-
+                JSONArray both_lists = new JSONArray(result);
+                JSONArray listOfLessonProgress = both_lists.getJSONArray(0);
+                JSONArray listOfRevisionProgress = both_lists.getJSONArray(1);
+                SharedPreferences.Editor editor1 = progressPreferences.edit();
+                JSONObject lessonProgressDetails = listOfLessonProgress.getJSONObject(0); //dummy initialization
                 for (int i = 0; i < listOfLessonProgress.length(); i++) {
-                    JSONObject lessonProgressDetails = listOfLessonProgress.getJSONObject(i);
-                    //do shared preference stuff
+                    lessonProgressDetails = listOfLessonProgress.getJSONObject(i);
+                    JSONObject revisionProgressDetails = listOfRevisionProgress.getJSONObject(i);
                     String fileName = lessonProgressDetails.optString("title");
+
+                    //lesson stuff
                     int lastSeen = lessonProgressDetails.optInt("last_seen_page");
                     int furthest = lessonProgressDetails.optInt("furthest_page");
                     System.out.println("File Name: " + fileName + "Last Seen: " + lastSeen +", Furthest: " + furthest);
-                    editor.putInt(fileName + "_LASTSEEN", lastSeen);
-                    editor.commit();
-                    editor.putInt(fileName + "_FURTHEST", furthest);
-                    editor.commit();
-                }
+                    editor1.putInt(fileName + "_LASTSEEN", lastSeen);
+                    editor1.commit();
+                    editor1.putInt(fileName + "_FURTHEST", furthest);
+                    editor1.commit();
 
-//                Intent mainPage = new Intent(getApplicationContext(),MainActivity.class);
-//                startActivity(mainPage);
+                    //revision stuff
+                    int highScore = revisionProgressDetails.optInt(("high_score"));
+                    editor1.putInt(fileName + "_highscore", highScore);
+                    editor1.commit();
+                }
+                //get user_id from last lesson progress pulled
+                int user_id = lessonProgressDetails.optInt("user_id");
+                System.out.println("User ID upon login:" + user_id);
+                SharedPreferences.Editor editor2 = appPreferences.edit();
+                editor2.putInt("user_id", user_id);
+                editor2.commit();
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
