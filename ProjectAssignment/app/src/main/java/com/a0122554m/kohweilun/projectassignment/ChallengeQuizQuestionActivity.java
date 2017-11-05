@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
-public class QuizBeaconActivity extends Activity {
+public class ChallengeQuizQuestionActivity extends Activity {
 
     private String question_id;
     private String question_title;
@@ -39,7 +39,7 @@ public class QuizBeaconActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz_beacon);
+        setContentView(R.layout.activity_quiz_question);
         question_id = getIntent().getIntExtra("id",0) + "";
         question_title = getIntent().getStringExtra("title");
         question_answers = getIntent().getStringExtra("answers").split(";");

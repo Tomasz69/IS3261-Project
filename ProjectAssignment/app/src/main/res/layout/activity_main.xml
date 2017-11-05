@@ -26,12 +26,12 @@
 
     <!-- Temporary -->
     <Button
-        android:id="@+id/BeaconButton"
+        android:id="@+id/ChallengeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/beacon_button"
+        android:text="@string/challenge_button"
         android:layout_below="@+id/LessonListButton"
-        android:onClick="onClick_GoToChallengeQuizActivity" />
+        android:onClick="onClick_GoToChallengeQuizCodeActivity" />
 
     <ImageButton
         android:id="@+id/revision_imageButton"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:src= "@drawable/revision_bluelogo"
         android:background="@color/transparent"
-        android:layout_below="@+id/BeaconButton"
+        android:layout_below="@+id/ChallengeButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:onClick="onClick_GoToRevisionListActivity" />

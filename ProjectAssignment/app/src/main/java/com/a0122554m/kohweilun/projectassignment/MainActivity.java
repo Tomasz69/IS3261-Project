@@ -115,17 +115,14 @@ public class MainActivity extends Activity {
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
     }
 
-    /*start of temporary buttons*/
     public void onClick_GoToLessonList(View view){
         Intent lessonListIntent = new Intent(this, StaticLessonsList.class);
         startActivity(lessonListIntent);
     }
 
-    //temporary testing
-    public void onClick_GoToChallengeQuizActivity(View view){
-        Intent beaconIntent = new Intent(this, QuizWebAPIActivity.class);
-        beaconIntent.putExtra("challengeQuizCode", "B34C0N");
-        startActivity(beaconIntent);
+    public void onClick_GoToChallengeQuizCodeActivity(View view){
+        Intent challengeCode = new Intent(this, ChallengeQuizCodeActivity.class);
+        startActivity(challengeCode);
     }
 
     public void onClick_GoToRevisionListActivity(View view) {

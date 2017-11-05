@@ -18,7 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
-public class QuizWebAPIActivity extends Activity {
+public class ChallengeQuizQuestionListActivity extends Activity {
 
     private String[] question_nums;
     private int[] question_ids; //same as location hint ids
@@ -30,14 +30,15 @@ public class QuizWebAPIActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz_web_api);
+        setContentView(R.layout.activity_challenge_quiz_question_list);
         GetQuestionsAsyncTask getQuestionsAsyncTask = new GetQuestionsAsyncTask();
         String challengeQuizCode = getIntent().getStringExtra("challengeQuizCode");
+        System.out.println("Challenge Code in List: " + challengeQuizCode);
         getQuestionsAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetAllQuestionsByCode?_question_code=" + challengeQuizCode);
     }
 
     private void setUpList(){
-        QuestionListAdapter adapter = new QuestionListAdapter(this, question_nums);
+        ChallengeQuestionListAdapter adapter = new ChallengeQuestionListAdapter(this, question_nums);
         ListView list = findViewById(R.id.questions_list);
         list.setAdapter(adapter);
 
@@ -45,7 +46,7 @@ public class QuizWebAPIActivity extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent beaconIntent = new Intent(getApplicationContext(), QuizBeaconActivity.class);
+                Intent beaconIntent = new Intent(getApplicationContext(), ChallengeQuizHintActivity.class);
                 beaconIntent.putExtra("id", question_ids[position]);
                 beaconIntent.putExtra("title", question_titles[position]);
                 beaconIntent.putExtra("answers", question_answers[position]);

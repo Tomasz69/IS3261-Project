@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.a0122554m.kohweilun.projectassignment.QuizBeaconActivity">
+    tools:context="com.a0122554m.kohweilun.projectassignment.ChallengeQuizQuestionActivity">
 
     <TextView
         android:id="@+id/hint"
