@@ -1,13 +1,16 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.estimote.coresdk.observation.region.beacon.BeaconRegion;
 import com.estimote.coresdk.recognition.packets.Beacon;
@@ -30,34 +33,54 @@ public class ChallengeQuizHintActivity extends Activity {
     private String question_title;
     private String[] question_answers;
     private String question_correct;
-    private int question_type = 0; //initial dummy value 0 [0 - normal; 1 - beacon; 2 - beacon with QR; 3 - gps; 4 - gps with QR]
-    private String location_description;
-    private String location_coordinates;
+    private int question_type = 0; //initial dummy value 0 [0 - normal; 1 - beacon; 2 - gps]
+    private String code;
+    private String location_description = ""; //dummy initialization
+    private String location_coordinates = ""; //dummy initialization
+    private String qrCodeScannedResult = ""; //dummy initialization
     private BeaconManager beaconManager;
     private BeaconRegion beaconRegion;
+    private int receivedRSSI = -1000; //dummy initialization
+    ImageView imageView;
+    TextView addInfo;
+    private Boolean questionDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz_hint);
+        setContentView(R.layout.activity_challenge_quiz_hint);
+
         question_id = getIntent().getIntExtra("id",0) + "";
         question_title = getIntent().getStringExtra("title");
         question_answers = getIntent().getStringExtra("answers").split(";");
         question_correct = getIntent().getStringExtra("correct");
         question_type = getIntent().getIntExtra("type",0);
+        code = getIntent().getStringExtra("code");
+        imageView = findViewById(R.id.imageHint);
+        addInfo = findViewById(R.id.additionalInfo);
 
-        //normal question no hints
-        if (question_type == 0){
-            assignFragments(question_title,question_answers);
-        }
-        //beacon hint
-        if (question_type == 1 || question_type == 2) {
-            GetHintAsyncTask getHintAsyncTask = new GetHintAsyncTask();
-            getHintAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetHint?_question_id=" + question_id);
-        }
-        //gps hint
-        if (question_type == 3 || question_type == 4) {
+        final String CHALLENGE_PREFS = "challenge_state";
+        SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
+        questionDone = challengePreferences.getBoolean(code + question_id + "DONE", false);
 
+        if (questionDone){
+            addInfo.setText("You have already completed this question.");
+        }else {
+
+
+            //normal question no hints
+            if (question_type == 0) {
+                GoToQuestionPage(question_id, question_title, question_answers, question_correct, code);
+            }
+            //beacon hint
+            if (question_type == 1) {
+                GetHintAsyncTask getHintAsyncTask = new GetHintAsyncTask();
+                getHintAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetHint?_question_id=" + question_id);
+            }
+            //gps hint
+            if (question_type == 2) {
+
+            }
         }
     }
 
@@ -88,6 +111,7 @@ public class ChallengeQuizHintActivity extends Activity {
             } finally {
                 assert httpURLConnection != null;
                 httpURLConnection.disconnect();
+
             }
 
             return stringBuilder.toString();
@@ -98,7 +122,8 @@ public class ChallengeQuizHintActivity extends Activity {
                 JSONObject location = new JSONObject(result);
                 location_description = location.optString("description");
                 location_coordinates = location.optString("coordinates");
-                setUpQuestionDisplayForBeacon();
+                new ImageLoadTask("http://192.168.137.1:3000/img/" + location_description, imageView).execute();
+                setUpBeaconOrGPSIfNeeded();
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
@@ -106,7 +131,42 @@ public class ChallengeQuizHintActivity extends Activity {
         }
     }
 
-    // method from internet to handle url stuff
+    public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
+
+        private String urlString;
+        private ImageView imageView;
+
+        public ImageLoadTask(String _url, ImageView _imageView) {
+            this.urlString = _url;
+            this.imageView = _imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            URL url = convertToUrl(urlString);
+            HttpURLConnection connection = null;
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                return myBitmap;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            imageView.setImageBitmap(result);
+        }
+
+    }
+
+    // method to handle url stuff
     private URL convertToUrl(String urlStr) {
         try {
             URL url = new URL(urlStr);
@@ -122,11 +182,44 @@ public class ChallengeQuizHintActivity extends Activity {
         return null;
     }
 
-    private void setUpQuestionDisplayForBeacon(){
-        TextView hint = findViewById(R.id.hint);
-        hint.setText(location_description);
-        String beaconCoordinates[] = location_coordinates.split(";");
-        setUpBeacon(beaconCoordinates[0], beaconCoordinates[1], beaconCoordinates[2]);
+    private void setUpBeaconOrGPSIfNeeded(){
+        if (question_type == 1) {
+            String beaconCoordinates[] = location_coordinates.split(";");
+            setUpBeacon(beaconCoordinates[0], beaconCoordinates[1], beaconCoordinates[2]);
+        }
+        if (question_type == 2) {
+
+        }
+    }
+
+    public void onClick_scanQR_or_goQuestion(View view){
+        if (questionDone) {
+            System.out.println("Happily doing nothing.");
+        }else {
+            if (qrCodeScannedResult.equals("")) {
+                Intent qrCodeIntent = new Intent(this, ChallengeQuizQRCodeActivity.class);
+                int requestCode = 5678;
+                startActivityForResult(qrCodeIntent, requestCode);
+            } else {
+                GoToQuestionPage(question_id, question_title, question_answers, question_correct, code);
+            }
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("Hint Activity Location:" + location_coordinates);
+        if (requestCode == 5678) {
+            if (resultCode == RESULT_OK) {
+                qrCodeScannedResult = data.getStringExtra("scannedResult");
+                System.out.println("Hint Activity Scanned: " + qrCodeScannedResult);
+                System.out.println("Hint Activity Boolean: " + location_coordinates.equals(qrCodeScannedResult));
+                if (!location_coordinates.equals(qrCodeScannedResult)) {
+                    addInfo.setText("You have scanned the wrong QR code! Try again!");
+                    qrCodeScannedResult = "";
+                }
+                setUpBeaconOrGPSIfNeeded();
+            }
+        }
     }
 
     private void setUpBeacon(String uuid, String major, String minor){
@@ -146,12 +239,12 @@ public class ChallengeQuizHintActivity extends Activity {
 
             @Override
             public void onEnteredRegion(BeaconRegion beaconRegion, List<Beacon> beacons) {
-                Toast.makeText(getApplicationContext(), "You are getting closer!", Toast.LENGTH_LONG).show();
+                //addInfo.setText("You are close!");
             }
 
             @Override
             public void onExitedRegion(BeaconRegion region) {
-                Toast.makeText(getApplicationContext(), "You are getting further!", Toast.LENGTH_LONG).show();
+                //addInfo.setText("You are getting further!");
             }
         });
 
@@ -161,57 +254,66 @@ public class ChallengeQuizHintActivity extends Activity {
                 if (!beacons.isEmpty()) {
                     Beacon beaconForQuiz = beacons.get(0);
 
-                    /*testing only*/
-                    int receivedRSSI = beaconForQuiz.getRssi();
-                    displayRSSI(receivedRSSI);
-                    /*end of testing*/
-
-                    if (receivedRSSI >= -70) {
-                        String question = question_title;
-                        String[] answers = question_answers;
-                        assignFragments(question, answers);
+                    receivedRSSI = beaconForQuiz.getRssi();
+                    System.out.println("Hint Activity Beacon Boolean: " + location_coordinates.equals(qrCodeScannedResult));
+                    if (location_coordinates.equals(qrCodeScannedResult)) {
+                        if (receivedRSSI >= -70) {
+                            addInfo.setText("Verified! Proceed to question.");
+                            Button buttonInHintActivity = findViewById(R.id.scanQRorGoQuestionButton);
+                            buttonInHintActivity.setText(getResources().getString(R.string.go_question_button));
+                        } else {
+                            addInfo.setText("Walk closer to beacon to view question.");
+                        }
                     }
                 }
             }
         });
     }
 
-    private void assignFragments(String _question, String[] _answers){
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction;
-        fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment questionFragment = new QuizQuestionFragment();
-        Bundle args = new Bundle();
-        args.putString("question", _question);
-        args.putStringArray("answers", _answers);
-        questionFragment.setArguments(args);
-        fragmentTransaction.add(R.id.FragmentForQuestion, questionFragment);
-        fragmentTransaction.commit();
+    private void GoToQuestionPage(String _question_id, String _question, String[] _answers, String _correct, String _code){
+        Intent questionIntent = new Intent(getApplicationContext(), BothTypesQuestionActivity.class);
+        questionIntent.putExtra("challenge", true);
+        questionIntent.putExtra("id", _question_id);
+        questionIntent.putExtra("question", _question);
+        questionIntent.putExtra("answers", _answers);
+        questionIntent.putExtra("correct", _correct);
+        questionIntent.putExtra("code", _code);
+        startActivity(questionIntent);
     }
 
     @Override
     protected void onPause() {
-        if (question_type == 1 || question_type == 2) {
-            beaconManager.stopMonitoring(beaconRegion.getIdentifier());
-            beaconManager.stopRanging(beaconRegion);
+        if(!questionDone) {
+            if (question_type == 1 || question_type == 2) {
+                beaconManager.stopMonitoring(beaconRegion.getIdentifier());
+                beaconManager.stopRanging(beaconRegion);
+            }
         }
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (question_type == 1 || question_type == 2) {
-            beaconManager.stopMonitoring(beaconRegion.getIdentifier());
-            beaconManager.stopRanging(beaconRegion);
+        if (!questionDone) {
+            if (question_type == 1 || question_type == 2) {
+                beaconManager.stopMonitoring(beaconRegion.getIdentifier());
+                beaconManager.stopRanging(beaconRegion);
+            }
         }
         super.onDestroy();
     }
 
-    /*methods for testing*/
-    private void displayRSSI(int _rssi){
-        TextView rssi = findViewById(R.id.rssi);
-        //for testing, to be changed
-        rssi.setText(_rssi + "");
-    }
-    /*end of testing methods*/
+    //private void setUpQuestionDisplayForBeacon(){
+//        TextView hint = findViewById(R.id.additionalInfo);
+//        hint.setText(location_description);
+//        String beaconCoordinates[] = location_coordinates.split(";");
+//        setUpBeacon(beaconCoordinates[0], beaconCoordinates[1], beaconCoordinates[2]);
+//    }
+//    /*methods for testing*/
+//    private void displayRSSI(int _rssi){
+//        TextView rssi = findViewById(R.id.rssi);
+//        //for testing, to be changed
+//        rssi.setText(_rssi + "");
+//    }
+//    /*end of testing methods*/
 }

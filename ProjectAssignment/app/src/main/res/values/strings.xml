@@ -20,7 +20,7 @@
     <string name="lesson_button11">QR Codes</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
-    <string name="challenge_button">Go To Challenge Quiz</string>
+
 
     <!-- List of Questions Page-->
     <string name="sample_question_button">Question 1</string>
@@ -28,6 +28,11 @@
     <!--Navigation buttons-->
     <string name="useful_links">Useful Links</string>
     <string name="revision">Revision</string>
+    <string name="challenge_button">Go To Challenge Quiz</string>
+
+    <!--Challenge Quiz Activity-->
+    <string name="scan_qr_code_button">Scan QR Code</string>
+    <string name="go_question_button">Go To Question</string>
 
     <!--Revision Quiz Activity-->
     <string name="score_text">Score: </string>

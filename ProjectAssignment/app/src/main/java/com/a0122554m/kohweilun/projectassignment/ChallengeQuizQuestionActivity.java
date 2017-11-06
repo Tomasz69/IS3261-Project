@@ -39,7 +39,7 @@ public class ChallengeQuizQuestionActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz_question);
+        setContentView(R.layout.activity_challenge_quiz_question);
         question_id = getIntent().getIntExtra("id",0) + "";
         question_title = getIntent().getStringExtra("title");
         question_answers = getIntent().getStringExtra("answers").split(";");
@@ -178,7 +178,7 @@ public class ChallengeQuizQuestionActivity extends Activity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction;
         fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment questionFragment = new QuizQuestionFragment();
+        Fragment questionFragment = new OldQuizQuestionFragment();
         Bundle args = new Bundle();
         args.putString("question", _question);
         args.putStringArray("answers", _answers);

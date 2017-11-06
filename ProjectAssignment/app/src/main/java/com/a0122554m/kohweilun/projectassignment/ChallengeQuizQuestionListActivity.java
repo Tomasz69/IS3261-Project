@@ -26,13 +26,13 @@ public class ChallengeQuizQuestionListActivity extends Activity {
     private String[] question_answers;
     private String[] question_corrects;
     private int[] question_types; //0 - normal; 1 - beacon; 2 - beacon with QR; 3 - gps; 4 - gps with QR
-
+    private String challengeQuizCode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_quiz_question_list);
         GetQuestionsAsyncTask getQuestionsAsyncTask = new GetQuestionsAsyncTask();
-        String challengeQuizCode = getIntent().getStringExtra("challengeQuizCode");
+        challengeQuizCode = getIntent().getStringExtra("challengeQuizCode");
         System.out.println("Challenge Code in List: " + challengeQuizCode);
         getQuestionsAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetAllQuestionsByCode?_question_code=" + challengeQuizCode);
     }
@@ -46,13 +46,14 @@ public class ChallengeQuizQuestionListActivity extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent beaconIntent = new Intent(getApplicationContext(), ChallengeQuizHintActivity.class);
-                beaconIntent.putExtra("id", question_ids[position]);
-                beaconIntent.putExtra("title", question_titles[position]);
-                beaconIntent.putExtra("answers", question_answers[position]);
-                beaconIntent.putExtra("correct", question_corrects[position]);
-                beaconIntent.putExtra("type", question_types[position]);
-                startActivity(beaconIntent);
+                Intent hintIntent = new Intent(getApplicationContext(), ChallengeQuizHintActivity.class);
+                hintIntent.putExtra("id", question_ids[position]);
+                hintIntent.putExtra("title", question_titles[position]);
+                hintIntent.putExtra("answers", question_answers[position]);
+                hintIntent.putExtra("correct", question_corrects[position]);
+                hintIntent.putExtra("type", question_types[position]);
+                hintIntent.putExtra("code", challengeQuizCode);
+                startActivity(hintIntent);
             }
         });
     }

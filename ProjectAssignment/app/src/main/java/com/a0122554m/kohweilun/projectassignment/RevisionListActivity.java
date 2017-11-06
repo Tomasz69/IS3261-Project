@@ -70,7 +70,7 @@ public class RevisionListActivity extends Activity {
         int i;
         for (i = 0; i < filesList.length; i++){
             Button button = buttons[i];
-            final Intent intent = new Intent(this, RevisionQuizActivity.class);
+            final Intent intent = new Intent(this, BothTypesQuestionActivity.class);
             intent.putExtra("fileName", filesList[i]);
             intent.putExtra("title", titlesList[i]);
             button.setOnClickListener(new View.OnClickListener(){

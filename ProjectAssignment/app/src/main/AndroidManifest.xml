@@ -3,6 +3,9 @@
     package="com.a0122554m.kohweilun.projectassignment">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-feature android:name="android.hardware.camera2" />
 
     <application
         android:allowBackup="true"
@@ -40,7 +43,7 @@
         <activity android:name=".ChallengeQuizQuestionListActivity" />
         <activity android:name=".LinksActivity" />
         <activity android:name=".RevisionListActivity" />
-        <activity android:name=".RevisionQuizActivity" />
+        <activity android:name=".BothTypesQuestionActivity" />
         <activity android:name=".HighscoreActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
@@ -49,7 +52,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChallengeQuizCodeActivity"></activity>
+        <activity android:name=".ChallengeQuizCodeActivity" />
+        <activity android:name=".ChallengeQuizQRCodeActivity"/>
+        <activity
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

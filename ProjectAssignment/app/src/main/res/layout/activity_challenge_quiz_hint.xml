@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.a0122554m.kohweilun.projectassignment.ChallengeQuizQuestionActivity">
+    tools:context="com.a0122554m.kohweilun.projectassignment.ChallengeQuizHintActivity">
+
+
+
+    <ImageView
+        android:id="@+id/imageHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/android_logo" />
+
+    <Button
+        android:id="@+id/scanQRorGoQuestionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scan_qr_code_button"
+        android:onClick="onClick_scanQR_or_goQuestion"/>
 
     <TextView
-        android:id="@+id/hint"
+        android:id="@+id/additionalInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
+
+
 
     <TextView
         android:id="@+id/rssi"
@@ -19,10 +37,5 @@
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
-
-    <FrameLayout
-        android:id="@+id/FragmentForQuestion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

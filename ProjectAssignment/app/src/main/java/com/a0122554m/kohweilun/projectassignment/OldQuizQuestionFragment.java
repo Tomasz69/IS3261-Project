@@ -12,13 +12,13 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class QuizQuestionFragment extends Fragment {
+public class OldQuizQuestionFragment extends Fragment {
 
     private String QUESTION;
     private String[] ANSWERS;
     private String TEXT;
 
-    public QuizQuestionFragment() {
+    public OldQuizQuestionFragment() {
         // Required empty public constructor
     }
 
@@ -34,7 +34,7 @@ public class QuizQuestionFragment extends Fragment {
             int questionNum = i + 1;
             TEXT += "\n" + questionNum + ") " + ANSWERS[i];
         }
-        return inflater.inflate(R.layout.fragment_quiz_question, container, false);
+        return inflater.inflate(R.layout.old_fragment_quiz_question, container, false);
     }
 
     @Override
