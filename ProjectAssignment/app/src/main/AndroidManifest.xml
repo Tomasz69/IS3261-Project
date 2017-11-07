@@ -6,7 +6,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.camera2" />
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/earth_128"
@@ -17,7 +18,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -27,10 +27,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -39,7 +37,6 @@
         <activity android:name=".PDFActivity" />
         <activity android:name=".ChallengeQuizHintActivity" />
         <activity android:name=".ChallengeQuizQuestionActivity" />
-        <activity android:name=".OldDynamicLessonsList" />
         <activity android:name=".ChallengeQuizQuestionListActivity" />
         <activity android:name=".LinksActivity" />
         <activity android:name=".RevisionListActivity" />
@@ -53,14 +50,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChallengeQuizCodeActivity" />
-        <activity android:name=".ChallengeQuizQRCodeActivity"/>
-        <activity
-            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".ChallengeQuizQRCodeActivity" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
-
 </manifest>

@@ -1,12 +1,20 @@
 package com.a0122554m.kohweilun.projectassignment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +23,12 @@ import android.widget.TextView;
 import com.estimote.coresdk.observation.region.beacon.BeaconRegion;
 import com.estimote.coresdk.recognition.packets.Beacon;
 import com.estimote.coresdk.service.BeaconManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONObject;
 
@@ -27,7 +41,12 @@ import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
-public class ChallengeQuizHintActivity extends Activity {
+import static android.content.ContentValues.TAG;
+
+public class ChallengeQuizHintActivity extends Activity implements
+        com.google.android.gms.location.LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private String question_id;
     private String question_title;
@@ -45,10 +64,42 @@ public class ChallengeQuizHintActivity extends Activity {
     TextView addInfo;
     private Boolean questionDone;
 
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mCurrentLocation;
+    private String hint_lat;
+    private String hint_lng;
+
+    private static final int REQUEST_ACCESS_FINE_LOCATION_PERMISSION = 200;
+    private boolean permissionToAccessFineLocationAccepted = false;
+    private String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (grantResults.length > 1) {
+            permissionToAccessFineLocationAccepted = grantResults[1] ==
+                    PackageManager.PERMISSION_GRANTED;
+        }
+
+        if (!permissionToAccessFineLocationAccepted)
+            finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_quiz_hint);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, permissions,
+                    REQUEST_ACCESS_FINE_LOCATION_PERMISSION);
+        }
 
         question_id = getIntent().getIntExtra("id",0) + "";
         question_title = getIntent().getStringExtra("title");
@@ -66,8 +117,6 @@ public class ChallengeQuizHintActivity extends Activity {
         if (questionDone){
             addInfo.setText("You have already completed this question.");
         }else {
-
-
             //normal question no hints
             if (question_type == 0) {
                 GoToQuestionPage(question_id, question_title, question_answers, question_correct, code);
@@ -79,7 +128,19 @@ public class ChallengeQuizHintActivity extends Activity {
             }
             //gps hint
             if (question_type == 2) {
+                mLocationRequest = new LocationRequest();
+                mLocationRequest.setInterval(10000);
+                mLocationRequest.setFastestInterval(5000);
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .addApi(LocationServices.API)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .build();
+
+                GetHintAsyncTask getHintAsyncTask = new GetHintAsyncTask();
+                getHintAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetHint?_question_id=" + question_id);
             }
         }
     }
@@ -188,7 +249,9 @@ public class ChallengeQuizHintActivity extends Activity {
             setUpBeacon(beaconCoordinates[0], beaconCoordinates[1], beaconCoordinates[2]);
         }
         if (question_type == 2) {
-
+            String gpsCoordinates[] = location_coordinates.split(";");
+            hint_lat = gpsCoordinates[0];
+            hint_lng = gpsCoordinates[1];
         }
     }
 
@@ -284,9 +347,12 @@ public class ChallengeQuizHintActivity extends Activity {
     @Override
     protected void onPause() {
         if(!questionDone) {
-            if (question_type == 1 || question_type == 2) {
+            if (question_type == 1) {
                 beaconManager.stopMonitoring(beaconRegion.getIdentifier());
                 beaconManager.stopRanging(beaconRegion);
+            }
+            if (question_type == 2) {
+                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             }
         }
         super.onPause();
@@ -295,7 +361,7 @@ public class ChallengeQuizHintActivity extends Activity {
     @Override
     protected void onDestroy() {
         if (!questionDone) {
-            if (question_type == 1 || question_type == 2) {
+            if (question_type == 1) {
                 beaconManager.stopMonitoring(beaconRegion.getIdentifier());
                 beaconManager.stopRanging(beaconRegion);
             }
@@ -303,17 +369,76 @@ public class ChallengeQuizHintActivity extends Activity {
         super.onDestroy();
     }
 
-    //private void setUpQuestionDisplayForBeacon(){
-//        TextView hint = findViewById(R.id.additionalInfo);
-//        hint.setText(location_description);
-//        String beaconCoordinates[] = location_coordinates.split(";");
-//        setUpBeacon(beaconCoordinates[0], beaconCoordinates[1], beaconCoordinates[2]);
-//    }
-//    /*methods for testing*/
-//    private void displayRSSI(int _rssi){
-//        TextView rssi = findViewById(R.id.rssi);
-//        //for testing, to be changed
-//        rssi.setText(_rssi + "");
-//    }
-//    /*end of testing methods*/
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (question_type == 2) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (question_type == 2) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (question_type == 2) {
+            if (mGoogleApiClient.isConnected()) {
+                if (ContextCompat.checkSelfPermission(this,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                                    mGoogleApiClient, mLocationRequest, this);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+        if (mCurrentLocation != null) {
+            if (location_coordinates != "" && location_coordinates.equals(qrCodeScannedResult)) {
+                String lat = String.valueOf(mCurrentLocation.getLatitude());
+                String lng = String.valueOf(mCurrentLocation.getLongitude());
+                double lat_diff = Double.parseDouble(lat) - Double.parseDouble(hint_lat);
+                double lng_diff = Double.parseDouble(lng) - Double.parseDouble(hint_lng);
+
+                if (lat_diff <= 0.0001 && lat_diff >= -0.0001 && lng_diff <= 0.0001 && lng_diff >= -0.0001) {
+                    addInfo.setText("Verified! Proceed to question.");
+                    Button buttonInHintActivity = findViewById(R.id.scanQRorGoQuestionButton);
+                    buttonInHintActivity.setText(getResources().getString(R.string.go_question_button));
+                } else {
+                    addInfo.setText("Walk closer to view question." + " Latitude = " + lat + ", Longitude = " + lng);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                            mGoogleApiClient, mLocationRequest, this);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "Connection failed: " + connectionResult.toString());
+    }
+
 }

@@ -25,57 +25,33 @@ public class ChallengeQuizQRCodeActivity extends Activity {
     SurfaceView cameraView;
 
     BarcodeDetector barcodeDetector;
-    CameraSource    cameraSource;
+    CameraSource cameraSource;
 
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static final int REQUEST_CAMERA_PERMISSION = 300;
-    private boolean permissionToRecordAccepted = false;
-    private boolean permissionToUseCameraAccepted= false;
-
-    private String[] permissions = {Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.CAMERA};
+    private boolean permissionToUseCameraAccepted = false;
+    private String[] permissions = {Manifest.permission.CAMERA};
 
 
     @Override
-
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch (requestCode) {
-            case REQUEST_RECORD_AUDIO_PERMISSION:
-                if (grantResults.length>0) {
-                    permissionToRecordAccepted = grantResults[0] ==
-                            PackageManager.PERMISSION_GRANTED;
-                }
-                break;
-            case REQUEST_CAMERA_PERMISSION:
-                if (grantResults.length>1) {
-                    permissionToUseCameraAccepted = grantResults[1] ==
-                            PackageManager.PERMISSION_GRANTED;
-                }
-                break;
+        if (grantResults.length > 1) {
+            permissionToUseCameraAccepted = grantResults[1] ==
+                    PackageManager.PERMISSION_GRANTED;
         }
 
-        if ((!permissionToRecordAccepted) || (!permissionToUseCameraAccepted))
+        if (!permissionToUseCameraAccepted)
             finish();
     }
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_quiz_qrcode);
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    REQUEST_RECORD_AUDIO_PERMISSION);
-        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_DENIED) {
@@ -91,10 +67,10 @@ public class ChallengeQuizQRCodeActivity extends Activity {
 
         cameraSource = new CameraSource
                 .Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(640,480)
+                .setRequestedPreviewSize(640, 480)
                 .build();
 
-        cameraView.getHolder().addCallback(new SurfaceHolder.Callback(){
+        cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
@@ -122,8 +98,9 @@ public class ChallengeQuizQRCodeActivity extends Activity {
         });
 
 
-        barcodeDetector.setProcessor(new Detector.Processor<Barcode>(){
+        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             String scannedResult;
+
             @Override
             public void release() {
 
@@ -132,7 +109,7 @@ public class ChallengeQuizQRCodeActivity extends Activity {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barCodes = detections.getDetectedItems();
-                if (barCodes.size()!=0) {
+                if (barCodes.size() != 0) {
                     scannedResult = barCodes.valueAt(0).displayValue;
                     System.out.println("QR Activity:" + scannedResult);
                     Intent myIntent = new Intent();
