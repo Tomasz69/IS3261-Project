@@ -410,7 +410,8 @@ public class ChallengeQuizHintActivity extends Activity implements
                 double lat_diff = Double.parseDouble(lat) - Double.parseDouble(hint_lat);
                 double lng_diff = Double.parseDouble(lng) - Double.parseDouble(hint_lng);
 
-                if (lat_diff <= 0.0001 && lat_diff >= -0.0001 && lng_diff <= 0.0001 && lng_diff >= -0.0001) {
+                //buffer set as roughly within 50m range (with desired point in centre of 100m by 100m box)
+                if (lat_diff <= 0.0005 && lat_diff >= -0.0005 && lng_diff <= 0.0005 && lng_diff >= -0.0005) {
                     addInfo.setText("Verified! Proceed to question.");
                     Button buttonInHintActivity = findViewById(R.id.scanQRorGoQuestionButton);
                     buttonInHintActivity.setText(getResources().getString(R.string.go_question_button));
