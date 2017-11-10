@@ -42,6 +42,8 @@ public class PDFLessonsList extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pdf_lessons_list);
+        this.setTitle(R.string.lesson_title);
+
         String[] titlesList = {
                 getResources().getString(R.string.lesson_button1),
                 getResources().getString(R.string.lesson_button2),

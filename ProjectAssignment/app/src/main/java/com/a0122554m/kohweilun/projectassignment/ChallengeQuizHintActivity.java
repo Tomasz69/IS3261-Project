@@ -94,6 +94,7 @@ public class ChallengeQuizHintActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.challenge_quiz_hint);
+        this.setTitle(R.string.challenge_title);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_DENIED) {
@@ -115,7 +116,7 @@ public class ChallengeQuizHintActivity extends Activity implements
         questionDone = challengePreferences.getBoolean(code + question_id + "DONE", false);
 
         if (questionDone){
-            addInfo.setText("You have already completed this question.");
+            addInfo.setText(getResources().getString(R.string.challenge_hint_already_complete));
         }else {
             //normal question no hints
             if (question_type == 0) {
@@ -277,7 +278,7 @@ public class ChallengeQuizHintActivity extends Activity implements
                 System.out.println("Hint Activity Scanned: " + qrCodeScannedResult);
                 System.out.println("Hint Activity Boolean: " + location_coordinates.equals(qrCodeScannedResult));
                 if (!location_coordinates.equals(qrCodeScannedResult)) {
-                    addInfo.setText("You have scanned the wrong QR code! Try again!");
+                    addInfo.setText(getResources().getString(R.string.challenge_hint_wrong_qr));
                     qrCodeScannedResult = "";
                 }
                 setUpBeaconOrGPSIfNeeded();
@@ -324,11 +325,11 @@ public class ChallengeQuizHintActivity extends Activity implements
                     System.out.println("Hint Activity Beacon Boolean: " + location_coordinates.equals(qrCodeScannedResult));
                     if (location_coordinates.equals(qrCodeScannedResult)) {
                         if (receivedRSSI >= -70) {
-                            addInfo.setText("Verified! Proceed to question.");
+                            addInfo.setText(getResources().getString(R.string.challenge_hint_verified));
                             Button buttonInHintActivity = findViewById(R.id.scanQRorGoQuestionButton);
                             buttonInHintActivity.setText(getResources().getString(R.string.go_question_button));
                         } else {
-                            addInfo.setText("Walk closer to beacon to view question.");
+                            addInfo.setText(getResources().getString(R.string.challenge_hint_walk_closer_beacon));
                         }
                     }
                 }
@@ -416,11 +417,11 @@ public class ChallengeQuizHintActivity extends Activity implements
 
                 //buffer set as roughly within 50m range (with desired point in centre of 100m by 100m box)
                 if (lat_diff <= 0.0005 && lat_diff >= -0.0005 && lng_diff <= 0.0005 && lng_diff >= -0.0005) {
-                    addInfo.setText("Verified! Proceed to question.");
+                    addInfo.setText(getResources().getString(R.string.challenge_hint_verified));
                     Button buttonInHintActivity = findViewById(R.id.scanQRorGoQuestionButton);
                     buttonInHintActivity.setText(getResources().getString(R.string.go_question_button));
                 } else {
-                    addInfo.setText("Walk closer to view question." + " Latitude = " + lat + ", Longitude = " + lng);
+                    addInfo.setText(getResources().getString(R.string.challenge_hint_walk_closer_gps));// + " Latitude = " + lat + ", Longitude = " + lng);
                 }
             }
         }

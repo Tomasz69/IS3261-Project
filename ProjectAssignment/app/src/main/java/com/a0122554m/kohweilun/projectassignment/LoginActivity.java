@@ -45,6 +45,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        this.setTitle(R.string.login_title);
         appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
         progressPreferences = getSharedPreferences(PROGRESS_PREFS, MODE_PRIVATE);
         String fb_email = appPreferences.getString("email", null);
@@ -72,7 +73,7 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         // App code
-                        Toast.makeText(LoginActivity.this, "FB Login success!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getResources().getString(R.string.fb_login_success), Toast.LENGTH_SHORT).show();
                         GraphRequest request = GraphRequest.newMeRequest(
                                 loginResult.getAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {
@@ -87,7 +88,7 @@ public class LoginActivity extends Activity {
                                             GetUserAsyncTask getUserAsyncTask = new GetUserAsyncTask();
                                             getUserAsyncTask.execute("http://192.168.137.1:3000/api/user/login?email=" + email + "&name=" + name, email);
                                         } catch (JSONException exception) {
-                                            Toast.makeText(LoginActivity.this, "There is an error accessing the attributes.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.fb_error_attributes), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -100,13 +101,13 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onCancel() {
                         // App code
-                        Toast.makeText(LoginActivity.this, "FB Login cancel!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getResources().getString(R.string.fb_login_cancel), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
-                        Toast.makeText(LoginActivity.this, "FB Login error!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getResources().getString(R.string.fb_login_error), Toast.LENGTH_SHORT).show();
                     }
                 });
 

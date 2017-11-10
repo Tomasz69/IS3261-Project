@@ -33,6 +33,8 @@ public class PastChallengeResultsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.past_challenge_result_list);
+        this.setTitle(R.string.past_title);
+
         appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
         user_id = appPreferences.getInt("user_id",0);
         pastChallengeTV = findViewById(R.id.pastChallengeTextView);
@@ -75,6 +77,10 @@ public class PastChallengeResultsActivity extends Activity {
             try {
                 JSONArray listOfResults = new JSONArray(result);
                 int numOfResults =  listOfResults.length();
+                //for results not published yet
+                if (numOfResults == 0){
+                    pastChallengeTV.setText(getResources().getString(R.string.past_no_results_found));
+                }
                 challenge_codes = new String[numOfResults];
                 challenge_results = new String[numOfResults];
 
@@ -88,7 +94,8 @@ public class PastChallengeResultsActivity extends Activity {
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
-                pastChallengeTV.setText("No past results are found.");
+                //for users who have not taken part in any challenge
+                pastChallengeTV.setText(getResources().getString(R.string.past_no_results_found));
             }
         }
     }

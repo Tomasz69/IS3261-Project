@@ -25,8 +25,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Set up Login Button.
+        this.setTitle(R.string.main_title);
+        // Set up button for log out.
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
@@ -44,7 +44,6 @@ public class MainActivity extends Activity {
                     editor.commit();
                     Intent loginPage = new Intent(getApplicationContext(),LoginActivity.class);
                     startActivity(loginPage);
-
                 }
             }
         };

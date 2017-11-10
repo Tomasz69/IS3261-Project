@@ -49,9 +49,12 @@ public class ChallengeQuizQuestionListActivity extends Activity {
     }
 
     public void onClick_endParticipation(View view){
+        final String CHALLENGE_PREFS = "challenge_state";
+        SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
+        int finalScore = challengePreferences.getInt(challengeQuizCode + "SCORE", 0);
         EndParticipationAsyncTask endParticipationAsyncTask = new EndParticipationAsyncTask();
         endParticipationAsyncTask.execute("http://192.168.137.1:3000/api/Questions/endChallengeParticipation?" +
-                "_question_code=" + challengeQuizCode + "&user_id=" + user_id);
+                "_question_code=" + challengeQuizCode + "&user_id=" + user_id + "&_score=" + finalScore);
     }
 
     private class EndParticipationAsyncTask extends AsyncTask<String, Void, String> {
@@ -89,10 +92,10 @@ public class ChallengeQuizQuestionListActivity extends Activity {
             try {
                 Boolean success = Boolean.valueOf(result);
                 if (success) {
-                    Toast.makeText(getApplicationContext(), "You have successfully ended your participation in this challenge.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.challenge_list_end_success), Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error! There is an error in ending your participation.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.challenge_list_end_failure), Toast.LENGTH_LONG).show();
 
                 }
             } catch (Exception e) {

@@ -58,6 +58,7 @@ public class BothTypesQuestionActivity extends Activity {
         challengeQuiz = getIntent().getBooleanExtra("challenge", false);
 
         if (challengeQuiz) {
+            this.setTitle(R.string.challenge_title);
             QUESTIONID = getIntent().getStringExtra("id");
             QUESTION = getIntent().getStringExtra("question");
             ANSWERS = getIntent().getStringArrayExtra("answers");
@@ -67,6 +68,7 @@ public class BothTypesQuestionActivity extends Activity {
             scoreView.setText("");
             updateQuestion();
         } else {
+            this.setTitle(R.string.revision_title);
             lesson = getIntent().getStringExtra("title");
             fileName = getIntent().getStringExtra("fileName");
             revisionQuestionBank.initQuestions(getApplicationContext(), lesson);
@@ -106,7 +108,7 @@ public class BothTypesQuestionActivity extends Activity {
                 answer = revisionQuestionBank.getCorrectAnswer(randomQuestions.get(questionNumber));
                 questionNumber++;
             } else {
-                Toast.makeText(this, "You have successfully completed this quiz!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.both_type_revision_complete_question), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(this, RevisionHighscoreActivity.class);
                 intent.putExtra("lesson", lesson);
@@ -135,13 +137,13 @@ public class BothTypesQuestionActivity extends Activity {
             int currentScore = challengePreferences.getInt(CHALLENGE_CODE + "SCORE", 0);
             System.out.println("Current score before marking question: " + currentScore);
             if (chosenChoice.getText().equals(CORRECT)) {
-                Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
                 currentScore++;
                 editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
                 editor.commit();
                 System.out.println("Current score after marking question correct: " + currentScore);
             } else {
-                Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
                 System.out.println("Current score after marking question wrong: " + currentScore);
             }
 //            Intent challengeQuizList = new Intent(this, ChallengeQuizQuestionListActivity.class);
@@ -151,9 +153,9 @@ public class BothTypesQuestionActivity extends Activity {
         } else {
             if (chosenChoice.getText().equals(answer)) {
                 score++;
-                Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
             }
 
             updateScore(score);

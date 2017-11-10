@@ -18,6 +18,7 @@ public class RevisionHighscoreActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.revision_highscore);
+        this.setTitle(R.string.revision_title);
 
         tv_highscore = (TextView)findViewById(R.id.highscore);
         tv_currentScore = (TextView)findViewById(R.id.currentScore);
@@ -30,19 +31,19 @@ public class RevisionHighscoreActivity extends Activity {
         sharedPreferences = getSharedPreferences(HIGHSCORE_PREFS, Context.MODE_PRIVATE);
 
         updateHighscore(fileName, current_score, max_score);
-        tv_currentScore.setText("Your current score is " + current_score + " !");
+        tv_currentScore.setText(getResources().getString(R.string.rev_current_score) + " " + current_score + " !");
     }
 
     private void updateHighscore(String fileName, int current_score, int max_score) {
         int high_score = sharedPreferences.getInt(fileName + "_highscore", 0);//changed to fileName
 
         if (current_score > high_score) {
-            tv_highscore.setText("NEW HIGHSCORE: \n" + "" + current_score + " / " + max_score);
+            tv_highscore.setText(getResources().getString(R.string.rev_new_high_score) + "\n" + "" + current_score + " / " + max_score);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(fileName + "_highscore", current_score); //changed to fileName
             editor.commit();
         } else {
-            tv_highscore.setText("HIGHSCORE: \n" + "" + high_score + " / " + max_score);
+            tv_highscore.setText(getResources().getString(R.string.rev_high_score) + "\n" + "" + high_score + " / " + max_score);
         }
     }
 

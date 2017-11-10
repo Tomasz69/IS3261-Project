@@ -37,6 +37,7 @@ public class ChallengeQuizCodeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.challenge_quiz_code);
+        this.setTitle(R.string.challenge_title);
         appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
         user_id = appPreferences.getInt("user_id",0);
         quizStatusUpdate = findViewById(R.id.codeTextView);
@@ -127,7 +128,7 @@ public class ChallengeQuizCodeActivity extends Activity {
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
-                quizStatusUpdate.setText("Error! The quiz has expired or is not available.");
+                quizStatusUpdate.setText(getResources().getString(R.string.challenge_code_error));
             }
         }
     }

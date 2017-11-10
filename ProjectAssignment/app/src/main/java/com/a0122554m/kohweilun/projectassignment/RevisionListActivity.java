@@ -41,6 +41,8 @@ public class RevisionListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.revision_list);
+        this.setTitle(R.string.revision_title);
+
         String[] titlesList = {
                 getResources().getString(R.string.lesson_button1),
                 getResources().getString(R.string.lesson_button2),

@@ -52,6 +52,7 @@ public class ChallengeQuizQRCodeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.challenge_quiz_qrcode);
+        this.setTitle(R.string.challenge_title);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_DENIED) {

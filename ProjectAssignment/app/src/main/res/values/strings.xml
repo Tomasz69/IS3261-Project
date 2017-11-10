@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">Project Assignment</string>
-
     <!--For Facebook Login-->
     <string name="facebook_app_id">211290756075038</string>
     <string name="fb_login_protocol_scheme">fb211290756075038</string>
@@ -20,7 +18,6 @@
     <string name="lesson_button11">QR Codes</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
-
 
     <!-- List of Questions Page-->
     <string name="sample_question_button">Question 1</string>
@@ -44,7 +41,44 @@
     <!--Highscore Activity-->
     <string name="btn_back">Back</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_old_dummy_maps">Map</string>
+    <!--Titles-->
+    <string name="app_name">Padawan Academy</string>
+    <string name="login_title">Padawan Academy Login</string>
+    <string name="main_title">Padawan Academy Main</string>
+    <string name="lesson_title">Lessons</string>
+    <string name="revision_title">Revision Quiz</string>
+    <string name="challenge_title">Challenge Quiz</string>
+    <string name="useful_title">Useful Links</string>
+    <string name="past_title">Past Challenge Results</string>
+
+    <!--All remaining Toasts, TextViews and Buttons-->
+    <string name="both_type_revision_complete_question">"You have successfully completed this quiz!"</string>
+    <string name="question_correct">Correct!</string>
+    <string name="question_wrong">Wrong!</string>
+    <string name="challenge_code_error">Error! The quiz has expired or is not available.</string>
+    <string name="challenge_hint_already_complete">You have already completed this question.</string>
+    <string name="challenge_hint_wrong_qr">You have scanned the wrong QR code! Try again!</string>
+    <string name="challenge_hint_verified">Verified! Proceed to question.</string>
+    <string name="challenge_hint_walk_closer_beacon">Go closer to beacon to view question.</string>
+    <string name="challenge_hint_walk_closer_gps">Walk closer to view question.</string>
+    <string name="challenge_list_end_success">You have successfully ended your participation in this challenge.</string>
+    <string name="challenge_list_end_failure">Error! There is an error in ending your participation.</string>
+    <string name="fb_login_success">FB Login Success</string>
+    <string name="fb_error_attributes">There is an error accessing the attributes.</string>
+    <string name="fb_login_cancel">FB Login Cancelled</string>
+    <string name="fb_login_error">FB Login Error</string>
+    <string name="past_no_results_found">No past results found.</string>
+    <string name="rev_current_score">Your current score is</string>
+    <string name="rev_new_high_score">NEW HIGH SCORE:</string>
+    <string name="rev_high_score">HIGH SCORE:</string>
+    <string name="useful_item1">Google Android Developer Page</string>
+    <string name="useful_item2">Vogella Android Tutorials</string>
+    <string name="useful_item3">CodePath Android Cliffnotes</string>
+    <string name="useful_item4">TheNewBoston Video Tutorials</string>
+    <string name="useful_item5">Derek Banas Video Tutorials</string>
+    <string name="useful_desc1">The central website where you will find all the resources to get you started with android development. The website includes many resources for learning the fundamentals, a complete API reference and the tools that you will need to start developing.</string>
+    <string name="useful_desc2">Contains many tutorials for the beginner and the advanced android programmer. The articles by Lars Vogel are usually expertly written and will provide you with a deeper understanding of the Android architecture.</string>
+    <string name="useful_desc3">Welcome to the open-source CodePath Android Cliffnotes! Our goal is to become the central crowdsourced resource for complete and up-to-date practical Android developer guides for any topic.</string>
+    <string name="useful_desc4">200 video tutorials that focus on individual aspects of Android development, starting with downloading and installing the SDK. Most videos are around 5 minutes long so they can be enjoyed during a short break.</string>
+    <string name="useful_desc5">Derek has posted video tutorials on a number of subjects. Currently there are 26 tutorials on Android development.</string>
 </resources>
