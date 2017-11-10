@@ -48,6 +48,7 @@ public class HighscoreActivity extends Activity {
 
     public void onClick_GoBackToRevisionListActivity(View view) {
         Intent intent = new Intent(this, RevisionListActivity.class);
+        finish();
         startActivity(intent);
     }
 }

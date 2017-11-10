@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class BothTypesQuestionActivity extends Activity {
     private RevisionQuestionBank revisionQuestionBank = new RevisionQuestionBank();
-
 
     private Button buttonChoice1;
     private Button buttonChoice2;
@@ -36,6 +38,8 @@ public class BothTypesQuestionActivity extends Activity {
     private int score = 0;
     private int questionNumber = 0;
     private String answer;
+
+    private ArrayList<Integer> randomQuestions = new ArrayList<Integer>();
 
 
     @Override
@@ -62,12 +66,17 @@ public class BothTypesQuestionActivity extends Activity {
             scoreTextView.setText("Question:");
             scoreView.setText("");
             updateQuestion();
-        }else {
+        } else {
             lesson = getIntent().getStringExtra("title");
             fileName = getIntent().getStringExtra("fileName");
             revisionQuestionBank.initQuestions(getApplicationContext(), lesson);
 
             max_score = revisionQuestionBank.getNumQuestions();
+
+            for (int i = 0; i < max_score; i++) {
+                randomQuestions.add(i);
+            }
+            Collections.shuffle(randomQuestions);
 
             updateQuestion();
             updateScore(score);
@@ -75,20 +84,26 @@ public class BothTypesQuestionActivity extends Activity {
     }
 
     private void updateQuestion() {
+        ArrayList<Integer> randomOptions = new ArrayList<Integer>();
+        for (int i = 0; i < 4; i++) {
+            randomOptions.add(i);
+        }
+        Collections.shuffle(randomOptions);
+
         if (challengeQuiz) {
             questionView.setText(QUESTION);
-            buttonChoice1.setText(ANSWERS[0]);
-            buttonChoice2.setText(ANSWERS[1]);
-            buttonChoice3.setText(ANSWERS[2]);
-            buttonChoice4.setText(ANSWERS[3]);
+            buttonChoice1.setText(ANSWERS[randomOptions.get(0)]);
+            buttonChoice2.setText(ANSWERS[randomOptions.get(1)]);
+            buttonChoice3.setText(ANSWERS[randomOptions.get(2)]);
+            buttonChoice4.setText(ANSWERS[randomOptions.get(3)]);
         } else {
             if (questionNumber < revisionQuestionBank.getNumQuestions()) {
-                questionView.setText(revisionQuestionBank.getQuestion(questionNumber));
-                buttonChoice1.setText(revisionQuestionBank.getChoice(questionNumber, 0));
-                buttonChoice2.setText(revisionQuestionBank.getChoice(questionNumber, 1));
-                buttonChoice3.setText(revisionQuestionBank.getChoice(questionNumber, 2));
-                buttonChoice4.setText(revisionQuestionBank.getChoice(questionNumber, 3));
-                answer = revisionQuestionBank.getCorrectAnswer(questionNumber);
+                questionView.setText(revisionQuestionBank.getQuestion(randomQuestions.get(questionNumber)));
+                buttonChoice1.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(0)));
+                buttonChoice2.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(1)));
+                buttonChoice3.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(2)));
+                buttonChoice4.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(3)));
+                answer = revisionQuestionBank.getCorrectAnswer(randomQuestions.get(questionNumber));
                 questionNumber++;
             } else {
                 Toast.makeText(this, "You have successfully completed this quiz!", Toast.LENGTH_SHORT).show();
@@ -99,6 +114,7 @@ public class BothTypesQuestionActivity extends Activity {
                 intent.putExtra("max_score", max_score);
                 intent.putExtra("current_score", score);
 
+                finish();
                 startActivity(intent);
             }
         }
