@@ -111,19 +111,27 @@ public class BothTypesQuestionActivity extends Activity {
     public void onClick_SubmitAnswer(View view) {
         Button chosenChoice = (Button)view;
         if (challengeQuiz) {
-            if (chosenChoice.getText().equals(CORRECT)) {
-                Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
-            }
             final String CHALLENGE_PREFS = "challenge_state";
             SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
             SharedPreferences.Editor editor = challengePreferences.edit();
             editor.putBoolean(CHALLENGE_CODE + QUESTIONID + "DONE", true);
             editor.commit();
-            Intent challengeQuizList = new Intent(this, ChallengeQuizQuestionListActivity.class);
-            challengeQuizList.putExtra("challengeQuizCode", CHALLENGE_CODE);
-            startActivity(challengeQuizList);
+            int currentScore = challengePreferences.getInt(CHALLENGE_CODE + "SCORE", 0);
+            System.out.println("Current score before marking question: " + currentScore);
+            if (chosenChoice.getText().equals(CORRECT)) {
+                Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+                currentScore++;
+                editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
+                editor.commit();
+                System.out.println("Current score after marking question correct: " + currentScore);
+            } else {
+                Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
+                System.out.println("Current score after marking question wrong: " + currentScore);
+            }
+//            Intent challengeQuizList = new Intent(this, ChallengeQuizQuestionListActivity.class);
+//            challengeQuizList.putExtra("challengeQuizCode", CHALLENGE_CODE);
+//            startActivity(challengeQuizList);
+            finish();
         } else {
             if (chosenChoice.getText().equals(answer)) {
                 score++;
