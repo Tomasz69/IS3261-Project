@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class HighscoreActivity extends Activity {
+public class RevisionHighscoreActivity extends Activity {
     public static final String HIGHSCORE_PREFS = "progress_state";//changed to progress state..use same one as lessons
     TextView tv_highscore;
     TextView tv_currentScore;
@@ -17,7 +17,7 @@ public class HighscoreActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_highscore);
+        setContentView(R.layout.revision_highscore);
 
         tv_highscore = (TextView)findViewById(R.id.highscore);
         tv_currentScore = (TextView)findViewById(R.id.currentScore);

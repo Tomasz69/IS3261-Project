@@ -28,11 +28,13 @@
     <!--Navigation buttons-->
     <string name="useful_links">Useful Links</string>
     <string name="revision">Revision</string>
-    <string name="challenge_button">Go To Challenge Quiz</string>
+    <string name="challenge_button">Join Challenge Quiz</string>
+    <string name="challenge_results_button">Past Challenge Results</string>
 
     <!--Challenge Quiz Activity-->
     <string name="scan_qr_code_button">Scan QR Code</string>
     <string name="go_question_button">Go To Question</string>
+    <string name="end_challenge_button">End Participation</string>
 
     <!--Revision Quiz Activity-->
     <string name="score_text">Score: </string>

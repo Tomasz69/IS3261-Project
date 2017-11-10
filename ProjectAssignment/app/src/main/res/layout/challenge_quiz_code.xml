@@ -20,4 +20,10 @@
         android:layout_height="wrap_content"
         android:text="@string/challenge_button"
         android:onClick="onClick_GoToChallengeQuizList"/>
+
+    <TextView
+        android:id="@+id/codeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+     />
 </LinearLayout>

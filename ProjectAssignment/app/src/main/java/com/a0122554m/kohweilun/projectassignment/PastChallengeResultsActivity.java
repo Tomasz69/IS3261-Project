@@ -1,12 +1,10 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -19,48 +17,27 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
-public class ChallengeQuizCodeActivity extends Activity {
+public class PastChallengeResultsActivity extends Activity {
 
-    private String[] question_nums;
-    private int[] question_ids; //same as location hint ids
-    private String[] question_titles;
-    private String[] question_answers;
-    private String[] question_corrects;
-    private int[] question_types; //0 - normal; 1 - beacon; 2 - beacon with QR; 3 - gps; 4 - gps with QR
-    private String challengeCode;
+    ListView list;
+    String[] challenge_codes;
+    String[] challenge_results;
+
     private static final String FB_SHAREDPREF_FOR_APP = "FbSharedPrefForApp";
     private SharedPreferences appPreferences;
     private int user_id;
-    TextView quizStatusUpdate;
+
+    TextView pastChallengeTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.challenge_quiz_code);
+        setContentView(R.layout.past_challenge_result_list);
         appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
         user_id = appPreferences.getInt("user_id",0);
-        quizStatusUpdate = findViewById(R.id.codeTextView);
-    }
-
-    public void onClick_GoToChallengeQuizList(View view) {
-        EditText challengeCodeField = findViewById(R.id.challengeCodeText);
-        challengeCode = challengeCodeField.getText().toString();
+        pastChallengeTV = findViewById(R.id.pastChallengeTextView);
         GetQuestionsAsyncTask getQuestionsAsyncTask = new GetQuestionsAsyncTask();
-        getQuestionsAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetAllQuestionsByCode?_question_code="
-                + challengeCode + "&user_id=" + user_id);
-    }
-
-    private void GoToList() {
-        Intent intent = new Intent(this, ChallengeQuizQuestionListActivity.class);
-        intent.putExtra("question_nums", question_nums);
-        intent.putExtra("question_ids", question_ids);
-        intent.putExtra("question_titles", question_titles);
-        intent.putExtra("question_answers", question_answers);
-        intent.putExtra("question_corrects", question_corrects);
-        intent.putExtra("question_types", question_types);
-        intent.putExtra("challengeQuizCode", challengeCode);
-        System.out.println("Challenge Code in Code: " + challengeCode);
-        startActivity(intent);
+        getQuestionsAsyncTask.execute("http://192.168.137.1:3000/api/Questions/getPastChallengeResults?user_id=" + user_id);
     }
 
     private class GetQuestionsAsyncTask extends AsyncTask<String, Void, String> {
@@ -98,36 +75,20 @@ public class ChallengeQuizCodeActivity extends Activity {
             try {
                 JSONArray listOfQuestions = new JSONArray(result);
                 int numOfQuestions = listOfQuestions.length();
-                question_nums = new String[numOfQuestions];
-                question_ids = new int[numOfQuestions];
-                question_titles = new String[numOfQuestions];
-                question_answers = new String[numOfQuestions];
-                question_corrects = new String[numOfQuestions];
-                question_types = new int[numOfQuestions];
+                challenge_codes = new String[numOfQuestions];
+                challenge_results = new String[numOfQuestions];
 
                 for (int i = 0; i < listOfQuestions.length(); i++) {
                     final JSONObject questionDetails = listOfQuestions.getJSONObject(i);
-                    question_nums[i] = i + 1 + "";
-                    question_ids[i] = questionDetails.optInt("id_question");
-                    question_titles[i] = questionDetails.optString("question_title");
-                    question_answers[i] = questionDetails.optString("question_answers");
-                    question_corrects[i] = questionDetails.optString("question_correct_answer");
-                    question_types[i] = questionDetails.optInt("question_type");
+                    challenge_codes[i] = questionDetails.optString("code");
+                    challenge_results[i] = "Score: " + questionDetails.optString("score") + ", Position: " +
+                                                questionDetails.optString("position");
                 }
-                final String CHALLENGE_PREFS = "challenge_state";
-                SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
-                int currentScore = challengePreferences.getInt(challengeCode + "SCORE", 0);
-                System.out.println("Current score upon joining or rejoining quiz: " + currentScore);
-                if (currentScore == 0) {
-                    SharedPreferences.Editor editor = challengePreferences.edit();
-                    editor.putInt(challengeCode + "SCORE", 0);
-                    editor.commit();
-                }
-                GoToList();
+                setUpList();
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
-                quizStatusUpdate.setText("Error! The quiz has expired or is not available.");
+                pastChallengeTV.setText("No past results are found.");
             }
         }
     }
@@ -146,4 +107,11 @@ public class ChallengeQuizCodeActivity extends Activity {
         }
         return null;
     }
+    private void setUpList(){
+        PastChallengeResultsListAdapter adapter = new PastChallengeResultsListAdapter(this, challenge_codes, challenge_results);
+        list = (ListView) findViewById(R.id.links_list);
+        list.setAdapter(adapter);
+    }
+
+
 }

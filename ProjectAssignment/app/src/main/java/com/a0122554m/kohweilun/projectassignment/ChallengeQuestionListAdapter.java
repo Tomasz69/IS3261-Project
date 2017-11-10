@@ -17,7 +17,7 @@ public class ChallengeQuestionListAdapter extends ArrayAdapter<String> {
     private final String[] question_nums;
 
     public ChallengeQuestionListAdapter(Activity context, String[] question_nums) {
-        super(context, R.layout.question_in_list, question_nums);
+        super(context, R.layout.challenge_quiz_single_question, question_nums);
         // TODO Auto-generated constructor stub
 
         this.context = context;
@@ -27,7 +27,7 @@ public class ChallengeQuestionListAdapter extends ArrayAdapter<String> {
 
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.question_in_list, null, true);
+        View rowView = inflater.inflate(R.layout.challenge_quiz_single_question, null, true);
 
         TextView txtTitle = rowView.findViewById(R.id.question_num);
         txtTitle.setText("Question " + question_nums[position]);

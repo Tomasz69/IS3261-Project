@@ -13,7 +13,7 @@ import java.util.List;
  * Created by JR on 30/10/17.
  */
 
-public class MyDBHelper extends SQLiteOpenHelper {
+public class RevisionDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "RevisionQuestionBankDB";
@@ -40,7 +40,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     private static final String SQLite_DELETE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public MyDBHelper(Context context) {
+    public RevisionDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

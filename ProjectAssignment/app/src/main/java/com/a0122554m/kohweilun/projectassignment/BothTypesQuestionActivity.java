@@ -45,7 +45,7 @@ public class BothTypesQuestionActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_both_types_question);
+        setContentView(R.layout.both_types_question);
 
         scoreView = (TextView)findViewById(R.id.score);
         scoreTextView = (TextView)findViewById(R.id.score_text);
@@ -108,7 +108,7 @@ public class BothTypesQuestionActivity extends Activity {
             } else {
                 Toast.makeText(this, "You have successfully completed this quiz!", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(this, HighscoreActivity.class);
+                Intent intent = new Intent(this, RevisionHighscoreActivity.class);
                 intent.putExtra("lesson", lesson);
                 intent.putExtra("fileName", fileName); //new
                 intent.putExtra("max_score", max_score);

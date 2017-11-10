@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class LinksActivity extends Activity {
+public class UsefulLinksActivity extends Activity {
 
     ListView list;
     String[] itemname = {
@@ -48,9 +48,9 @@ public class LinksActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.listview_reference);
+        setContentView(R.layout.useful_links_list);
 
-        CustomListAdapter adapter = new CustomListAdapter(this, itemname, imgid, description);
+        UsefulLinksListAdapter adapter = new UsefulLinksListAdapter(this, itemname, imgid, description);
         list = (ListView) findViewById(R.id.links_list);
         list.setAdapter(adapter);
 

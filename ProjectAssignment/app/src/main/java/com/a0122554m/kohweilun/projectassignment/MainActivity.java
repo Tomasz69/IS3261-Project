@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
     }
 
     public void onClick_GoToLessonList(View view){
-        Intent lessonListIntent = new Intent(this, StaticLessonsList.class);
+        Intent lessonListIntent = new Intent(this, PDFLessonsList.class);
         startActivity(lessonListIntent);
     }
 
@@ -125,13 +125,17 @@ public class MainActivity extends Activity {
         startActivity(challengeCode);
     }
 
+    public void onClick_GoToPastChallengeResultsActivity(View view){
+        Intent challengeResults = new Intent(this, PastChallengeResultsActivity.class);
+        startActivity(challengeResults);
+    }
     public void onClick_GoToRevisionListActivity(View view) {
         Intent revisionIntent = new Intent(this, RevisionListActivity.class);
         startActivity(revisionIntent);
     }
 
     public void onClick_GoToLinks(View view) {
-        Intent linksIntent = new Intent(this, LinksActivity.class);
+        Intent linksIntent = new Intent(this, UsefulLinksActivity.class);
         startActivity(linksIntent);
     }
 }

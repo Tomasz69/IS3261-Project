@@ -2,14 +2,13 @@ package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -27,38 +26,35 @@ public class ChallengeQuizQuestionListActivity extends Activity {
     private String[] question_corrects;
     private int[] question_types; //0 - normal; 1 - beacon; 2 - beacon with QR; 3 - gps; 4 - gps with QR
     private String challengeQuizCode;
+
+    private static final String FB_SHAREDPREF_FOR_APP = "FbSharedPrefForApp";
+    private SharedPreferences appPreferences;
+    private int user_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_challenge_quiz_question_list);
-        GetQuestionsAsyncTask getQuestionsAsyncTask = new GetQuestionsAsyncTask();
+        setContentView(R.layout.challenge_quiz_question_list);
+        appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
+        user_id = appPreferences.getInt("user_id",0);
+
+        question_nums = getIntent().getStringArrayExtra("question_nums");
+        question_ids = getIntent().getIntArrayExtra("question_ids");
+        question_titles = getIntent().getStringArrayExtra("question_titles");
+        question_answers = getIntent().getStringArrayExtra("question_answers");
+        question_corrects = getIntent().getStringArrayExtra("question_corrects");
+        question_types = getIntent().getIntArrayExtra("question_types");
         challengeQuizCode = getIntent().getStringExtra("challengeQuizCode");
-        System.out.println("Challenge Code in List: " + challengeQuizCode);
-        getQuestionsAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetAllQuestionsByCode?_question_code=" + challengeQuizCode);
+        setUpList();
     }
 
-    private void setUpList(){
-        ChallengeQuestionListAdapter adapter = new ChallengeQuestionListAdapter(this, question_nums);
-        ListView list = findViewById(R.id.questions_list);
-        list.setAdapter(adapter);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent hintIntent = new Intent(getApplicationContext(), ChallengeQuizHintActivity.class);
-                hintIntent.putExtra("id", question_ids[position]);
-                hintIntent.putExtra("title", question_titles[position]);
-                hintIntent.putExtra("answers", question_answers[position]);
-                hintIntent.putExtra("correct", question_corrects[position]);
-                hintIntent.putExtra("type", question_types[position]);
-                hintIntent.putExtra("code", challengeQuizCode);
-                startActivity(hintIntent);
-            }
-        });
+    public void onClick_endParticipation(View view){
+        EndParticipationAsyncTask endParticipationAsyncTask = new EndParticipationAsyncTask();
+        endParticipationAsyncTask.execute("http://192.168.137.1:3000/api/Questions/endChallengeParticipation?" +
+                "_question_code=" + challengeQuizCode + "&user_id=" + user_id);
     }
 
-    private class GetQuestionsAsyncTask extends AsyncTask<String, Void, String> {
+    private class EndParticipationAsyncTask extends AsyncTask<String, Void, String> {
 
         public String doInBackground(String... str) {
             URL url = convertToUrl(str[0]);
@@ -86,31 +82,19 @@ public class ChallengeQuizQuestionListActivity extends Activity {
                 assert httpURLConnection != null;
                 httpURLConnection.disconnect();
             }
-
             return stringBuilder.toString();
         }
 
         public void onPostExecute(String result) {
             try {
-                JSONArray listOfQuestions = new JSONArray(result);
-                int numOfQuestions = listOfQuestions.length();
-                question_nums = new String[numOfQuestions];
-                question_ids = new int[numOfQuestions];
-                question_titles = new String[numOfQuestions];
-                question_answers = new String[numOfQuestions];
-                question_corrects = new String[numOfQuestions];
-                question_types = new int[numOfQuestions];
+                Boolean success = Boolean.getBoolean(result);
+                if (success) {
+                    Toast.makeText(getApplicationContext(), "You have successfully ended your participation in this challenge.", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error! There is an error in ending your participation.", Toast.LENGTH_LONG).show();
 
-                for (int i = 0; i < listOfQuestions.length(); i++) {
-                    final JSONObject questionDetails = listOfQuestions.getJSONObject(i);
-                    question_nums[i] = i+1 + "";
-                    question_ids[i] = questionDetails.optInt("id_question");
-                    question_titles[i] = questionDetails.optString("question_title");
-                    question_answers[i] = questionDetails.optString("question_answers");
-                    question_corrects[i] = questionDetails.optString("question_correct_answer");
-                    question_types[i] = questionDetails.optInt("question_type");
                 }
-                setUpList();
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
@@ -131,5 +115,26 @@ public class ChallengeQuizQuestionListActivity extends Activity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void setUpList(){
+        ChallengeQuestionListAdapter adapter = new ChallengeQuestionListAdapter(this, question_nums);
+        ListView list = findViewById(R.id.questions_list);
+        list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent hintIntent = new Intent(getApplicationContext(), ChallengeQuizHintActivity.class);
+                hintIntent.putExtra("id", question_ids[position]);
+                hintIntent.putExtra("title", question_titles[position]);
+                hintIntent.putExtra("answers", question_answers[position]);
+                hintIntent.putExtra("correct", question_corrects[position]);
+                hintIntent.putExtra("type", question_types[position]);
+                hintIntent.putExtra("code", challengeQuizCode);
+                startActivity(hintIntent);
+            }
+        });
     }
 }

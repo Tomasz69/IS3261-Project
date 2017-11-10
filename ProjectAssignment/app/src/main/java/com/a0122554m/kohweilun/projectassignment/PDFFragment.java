@@ -51,7 +51,7 @@ public class PDFFragment extends Fragment{
         FILENAME = args.getString("fileName");
         TITLE = args.getString("title");
         sharedPreferences = getActivity().getSharedPreferences(PROGRESS_PREFS, Context.MODE_PRIVATE);
-        return inflater.inflate(R.layout.fragment_pdf, container, false);
+        return inflater.inflate(R.layout.pdf_fragment, container, false);
     }
 
     @Override

@@ -22,7 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
-public class StaticLessonsList extends Activity {
+public class PDFLessonsList extends Activity {
 
     private String[] filesList = {
             "lesson01_introduction.pdf",
@@ -41,7 +41,7 @@ public class StaticLessonsList extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_static_lessons_list);
+        setContentView(R.layout.pdf_lessons_list);
         String[] titlesList = {
                 getResources().getString(R.string.lesson_button1),
                 getResources().getString(R.string.lesson_button2),

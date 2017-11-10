@@ -93,7 +93,7 @@ public class ChallengeQuizHintActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_challenge_quiz_hint);
+        setContentView(R.layout.challenge_quiz_hint);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_DENIED) {
@@ -283,6 +283,9 @@ public class ChallengeQuizHintActivity extends Activity implements
                 setUpBeaconOrGPSIfNeeded();
             }
         }
+        if (requestCode == 1234) {
+            finish();
+        }
     }
 
     private void setUpBeacon(String uuid, String major, String minor){
@@ -341,7 +344,8 @@ public class ChallengeQuizHintActivity extends Activity implements
         questionIntent.putExtra("answers", _answers);
         questionIntent.putExtra("correct", _correct);
         questionIntent.putExtra("code", _code);
-        startActivity(questionIntent);
+        int requestCode = 1234;
+        startActivityForResult(questionIntent, requestCode);
     }
 
     @Override

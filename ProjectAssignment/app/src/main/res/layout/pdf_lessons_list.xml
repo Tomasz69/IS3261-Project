@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/linearLayoutLessonsList"
-    tools:context="com.a0122554m.kohweilun.projectassignment.StaticLessonsList">
+    tools:context="com.a0122554m.kohweilun.projectassignment.PDFLessonsList">
 
     <ScrollView
         android:layout_width="match_parent"
