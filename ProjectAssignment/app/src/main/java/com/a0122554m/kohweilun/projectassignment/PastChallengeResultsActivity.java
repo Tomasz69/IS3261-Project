@@ -73,16 +73,16 @@ public class PastChallengeResultsActivity extends Activity {
 
         public void onPostExecute(String result) {
             try {
-                JSONArray listOfQuestions = new JSONArray(result);
-                int numOfQuestions = listOfQuestions.length();
-                challenge_codes = new String[numOfQuestions];
-                challenge_results = new String[numOfQuestions];
+                JSONArray listOfResults = new JSONArray(result);
+                int numOfResults =  listOfResults.length();
+                challenge_codes = new String[numOfResults];
+                challenge_results = new String[numOfResults];
 
-                for (int i = 0; i < listOfQuestions.length(); i++) {
-                    final JSONObject questionDetails = listOfQuestions.getJSONObject(i);
-                    challenge_codes[i] = questionDetails.optString("code");
-                    challenge_results[i] = "Score: " + questionDetails.optString("score") + ", Position: " +
-                                                questionDetails.optString("position");
+                for (int i = 0; i <  listOfResults.length(); i++) {
+                    final JSONObject resultDetails =  listOfResults.getJSONObject(i);
+                    challenge_codes[i] = resultDetails.optString("code");
+                    challenge_results[i] = "Score: " + resultDetails.optInt("score") + ", Position: " +
+                                                resultDetails.optInt("position");
                 }
                 setUpList();
             } catch (Exception e) {
@@ -109,7 +109,7 @@ public class PastChallengeResultsActivity extends Activity {
     }
     private void setUpList(){
         PastChallengeResultsListAdapter adapter = new PastChallengeResultsListAdapter(this, challenge_codes, challenge_results);
-        list = (ListView) findViewById(R.id.links_list);
+        list = (ListView) findViewById(R.id.results_list);
         list.setAdapter(adapter);
     }
 

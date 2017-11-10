@@ -87,7 +87,7 @@ public class ChallengeQuizQuestionListActivity extends Activity {
 
         public void onPostExecute(String result) {
             try {
-                Boolean success = Boolean.getBoolean(result);
+                Boolean success = Boolean.valueOf(result);
                 if (success) {
                     Toast.makeText(getApplicationContext(), "You have successfully ended your participation in this challenge.", Toast.LENGTH_LONG).show();
                     finish();
