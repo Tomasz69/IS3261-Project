@@ -6,77 +6,86 @@
     android:layout_height="match_parent"
     tools:context="com.a0122554m.kohweilun.projectassignment.MainActivity">
 
-    <!-- facebook logout button -->
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
-
-    <Button
-        android:id="@+id/LessonListButton"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/lesson_list_button"
-        android:layout_below="@+id/login_button"
-        android:onClick="onClick_GoToLessonList" />
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/ChallengeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/challenge_button"
-        android:layout_below="@+id/LessonListButton"
-        android:onClick="onClick_GoToChallengeQuizCodeActivity" />
+        <!-- facebook logout button -->
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp" />
 
-    <Button
-        android:id="@+id/ChallengeResultsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/challenge_results_button"
-        android:layout_below="@+id/ChallengeButton"
-        android:onClick="onClick_GoToPastChallengeResultsActivity" />
+        <Button
+            android:id="@+id/LessonListButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_button"
+            android:onClick="onClick_GoToLessonList"
+            android:text="@string/lesson_list_button" />
 
-    <ImageButton
-        android:id="@+id/revision_imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src= "@drawable/revision_bluelogo"
-        android:background="@color/transparent"
-        android:layout_below="@+id/ChallengeButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:onClick="onClick_GoToRevisionListActivity" />
+        <Button
+            android:id="@+id/ChallengeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/LessonListButton"
+            android:onClick="onClick_GoToChallengeQuizCodeActivity"
+            android:text="@string/challenge_button" />
 
-    <TextView
-        android:id="@+id/revision_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/revision"
-        android:layout_below="@+id/revision_imageButton"
-        android:layout_centerHorizontal="true"
-        android:onClick="onClick_GoToRevisionListActivity" />
+        <Button
+            android:id="@+id/ChallengeResultsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ChallengeButton"
+            android:onClick="onClick_GoToPastChallengeResultsActivity"
+            android:text="@string/challenge_results_button" />
 
-    <ImageButton
-        android:id="@+id/links_imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src= "@drawable/useful_96"
-        android:background="@color/transparent"
-        android:layout_below="@+id/revision_textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:onClick="onClick_GoToLinks" />
+        <ImageButton
+            android:id="@+id/revision_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ChallengeResultsButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@color/transparent"
+            android:onClick="onClick_GoToRevisionListActivity"
+            android:src="@drawable/revision_bluelogo" />
 
-    <TextView
-        android:id="@+id/links_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/useful_links"
-        android:layout_below="@+id/links_imageButton"
-        android:layout_centerHorizontal="true"
-        android:onClick="onClick_GoToLinks" />
+        <TextView
+            android:id="@+id/revision_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/revision_imageButton"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick_GoToRevisionListActivity"
+            android:text="@string/revision" />
+
+        <ImageButton
+            android:id="@+id/links_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/revision_textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@color/transparent"
+            android:onClick="onClick_GoToLinks"
+            android:src="@drawable/useful_96" />
+
+        <TextView
+            android:id="@+id/links_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/links_imageButton"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick_GoToLinks"
+            android:text="@string/useful_links" />
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
