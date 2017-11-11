@@ -147,7 +147,7 @@ public class ChallengeQuizQuestionListActivity extends Activity {
     }
 
     private void setUpList(){
-        ChallengeQuestionListAdapter adapter = new ChallengeQuestionListAdapter(this, question_nums);
+        ChallengeQuestionListAdapter adapter = new ChallengeQuestionListAdapter(this, question_nums, question_types);
         ListView list = findViewById(R.id.questions_list);
         list.setAdapter(adapter);
 

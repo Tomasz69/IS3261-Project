@@ -25,7 +25,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button1"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -35,7 +35,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button2"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -45,7 +45,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button3"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -55,7 +55,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button4"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -65,7 +65,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button5"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -75,7 +75,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button6"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -85,7 +85,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button7"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -95,7 +95,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button8"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -105,7 +105,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button9"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -115,7 +115,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button10"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
 
             <Button
@@ -125,7 +125,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/green"
                 android:text="@string/lesson_button11"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>

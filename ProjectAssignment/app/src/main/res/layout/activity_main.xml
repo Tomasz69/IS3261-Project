@@ -33,6 +33,7 @@
             android:drawableTop="@drawable/lessons_redlogo96"
             android:onClick="onClick_GoToLessonList"
             android:text="@string/lesson_list_button"
+            android:textSize="16sp"
             android:textColor="@color/white" />
 
         <Button
@@ -45,6 +46,7 @@
             android:drawableTop="@drawable/revision_bluelogo96"
             android:onClick="onClick_GoToRevisionListActivity"
             android:text="@string/revision"
+            android:textSize="16sp"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -64,6 +66,7 @@
             android:drawableTop="@drawable/challenge_quiz_greenlogo96"
             android:onClick="onClick_GoToChallengeQuizCodeActivity"
             android:text="@string/challenge_button"
+            android:textSize="16sp"
             android:textColor="@color/white" />
 
         <Button
@@ -76,6 +79,7 @@
             android:drawableTop="@drawable/challenge_leaderboard_redlogo96"
             android:onClick="onClick_GoToPastChallengeResultsActivity"
             android:text="@string/challenge_results_button"
+            android:textSize="16sp"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -89,5 +93,6 @@
         android:drawableTop="@drawable/useful_links_yellowlogo96"
         android:onClick="onClick_GoToLinks"
         android:text="@string/useful_links"
+        android:textSize="16sp"
         android:textColor="@color/white" />
 </LinearLayout>

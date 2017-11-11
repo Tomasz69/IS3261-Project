@@ -110,7 +110,6 @@ public class MainActivity extends Activity {
         System.out.println("Lesson Progress List: " + local_lesson_progress_list.toString());
         SyncLessonProgressAsyncTask syncLessonProgressAsyncTask = new SyncLessonProgressAsyncTask();
         syncLessonProgressAsyncTask.execute("http://192.168.137.1:3000/api/user/UpdateLessonProgress", local_lesson_progress_list.toString());
-
     }
 
     private class SyncLessonProgressAsyncTask extends AsyncTask<String, Void, String> {
@@ -200,7 +199,6 @@ public class MainActivity extends Activity {
         System.out.println("revision Progress List: " + local_revision_progress_list.toString());
         SyncRevisionProgressAsyncTask syncRevisionProgressAsyncTask = new SyncRevisionProgressAsyncTask();
         syncRevisionProgressAsyncTask.execute("http://192.168.137.1:3000/api/user/UpdateRevisionProgress", local_revision_progress_list.toString());
-
     }
 
     private class SyncRevisionProgressAsyncTask extends AsyncTask<String, Void, String> {
@@ -277,6 +275,7 @@ public class MainActivity extends Activity {
         }
         return null;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -309,6 +308,7 @@ public class MainActivity extends Activity {
         Intent challengeResults = new Intent(this, PastChallengeResultsActivity.class);
         startActivity(challengeResults);
     }
+
     public void onClick_GoToRevisionListActivity(View view) {
         Intent revisionIntent = new Intent(this, RevisionListActivity.class);
         startActivity(revisionIntent);

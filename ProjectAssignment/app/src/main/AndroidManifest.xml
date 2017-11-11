@@ -14,7 +14,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/earth_128"
+        android:icon="@drawable/padawan_logo128"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -46,7 +46,8 @@
         <activity android:name=".OldChallengeQuizQuestionActivity" />
         <activity android:name=".ChallengeQuizQuestionListActivity" />
         <activity android:name=".UsefulLinksActivity" />
-        <activity android:name=".RevisionListActivity" />
+        <activity android:name=".RevisionListActivity"
+                  android:launchMode="singleTop"/>
         <activity android:name=".BothTypesQuestionActivity" />
         <activity android:name=".RevisionHighscoreActivity" />
         <activity android:name=".LoginActivity">

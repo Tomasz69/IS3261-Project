@@ -1,8 +1,10 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.pdf.PdfRenderer;
@@ -26,7 +28,7 @@ import java.io.InputStream;
  * {@link PdfRenderer} to render PDF pages as
  * {@link Bitmap}s.
  */
-public class PDFFragment extends Fragment{
+public class PDFFragment extends Fragment {
 
     public static final String PROGRESS_PREFS = "progress_state";
     private static final String STATE_CURRENT_PAGE_INDEX = "current_page_index";
@@ -62,24 +64,47 @@ public class PDFFragment extends Fragment{
         mButtonPrevious = view.findViewById(R.id.previous);
         mButtonNext = view.findViewById(R.id.next);
         // Bind events.
-        mButtonPrevious.setOnClickListener(new View.OnClickListener(){
+        mButtonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 showPage(mCurrentPage.getIndex() - 1);
             }
         });
-        mButtonNext.setOnClickListener(new View.OnClickListener(){
+        mButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 showPage(mCurrentPage.getIndex() + 1);
             }
         });
 
         mPageIndex = sharedPreferences.getInt(FILENAME + "_LASTSEEN", 0);
         furthestPage = sharedPreferences.getInt(FILENAME + "_FURTHEST", 0);
+
         // If there is a savedInstanceState (screen orientations, etc.), we restore the page index.
         if (null != savedInstanceState) {
             mPageIndex = savedInstanceState.getInt(STATE_CURRENT_PAGE_INDEX, 0);
+        }
+
+        AlertDialog.Builder ad_builder = new AlertDialog.Builder(this.getContext());
+        ad_builder.setMessage("Which slide do you wish to return to?").setCancelable(false)
+                .setPositiveButton("Last seen: " + (mPageIndex+1), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                })
+                .setNegativeButton("Furthest: " + (furthestPage+1), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showPage(furthestPage);
+                        dialogInterface.cancel();
+                    }
+                });
+
+        if (mPageIndex > 0 && furthestPage > 0) {
+            AlertDialog alertDialog = ad_builder.create();
+            alertDialog.setTitle("Options");
+            alertDialog.show();
         }
     }
 
@@ -166,7 +191,7 @@ public class PDFFragment extends Fragment{
         }
 
         if (index > furthestPage) {
-            furthestPage = index + 1;
+            furthestPage = index;
             updateFurthest(furthestPage);
 //            Toast.makeText(getActivity(), "Furthest page: " + furthestPage, Toast.LENGTH_SHORT).show();
         }
@@ -177,7 +202,7 @@ public class PDFFragment extends Fragment{
         // Use `openPage` to open a specific page in PDF.
         mCurrentPage = mPdfRenderer.openPage(index);
         // Important: the destination bitmap must be ARGB (not RGB).
-        Bitmap bitmap = Bitmap.createBitmap(mCurrentPage.getWidth(), mCurrentPage.getHeight(),Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(mCurrentPage.getWidth(), mCurrentPage.getHeight(), Bitmap.Config.ARGB_8888);
         // Here, we render the page onto the Bitmap.
         // To render a portion of the page, use the second and third parameter. Pass nulls to get
         // the default result.

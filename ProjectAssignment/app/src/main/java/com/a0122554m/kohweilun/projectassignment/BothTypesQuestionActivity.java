@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 public class BothTypesQuestionActivity extends Activity {
+    private final long WAIT_DELAY = 2100;
     private RevisionQuestionBank revisionQuestionBank = new RevisionQuestionBank();
 
     private Button buttonChoice1;
@@ -65,9 +66,6 @@ public class BothTypesQuestionActivity extends Activity {
         buttonChoice3 = (Button) findViewById(R.id.choice3);
         buttonChoice4 = (Button) findViewById(R.id.choice4);
 
-        progressBarCircle = (ProgressBar) findViewById(R.id.progressBarCircle);
-        textViewTime = (TextView) findViewById(R.id.textViewTime);
-
         challengeQuiz = getIntent().getBooleanExtra("challenge", false);
 
         if (challengeQuiz) {
@@ -84,6 +82,8 @@ public class BothTypesQuestionActivity extends Activity {
             this.setTitle(R.string.revision_title);
             lesson = getIntent().getStringExtra("title");
             fileName = getIntent().getStringExtra("fileName");
+            progressBarCircle = (ProgressBar) findViewById(R.id.progressBarCircle);
+            textViewTime = (TextView) findViewById(R.id.textViewTime);
             revisionQuestionBank.initQuestions(getApplicationContext(), lesson);
 
             max_score = revisionQuestionBank.getNumQuestions();
@@ -151,10 +151,8 @@ public class BothTypesQuestionActivity extends Activity {
     }
 
     public void onClick_SubmitAnswer(View view) {
-        // call to start the count down timer
-        stopCountDownTimer();
-
         Button chosenChoice = (Button) view;
+
         if (challengeQuiz) {
             final String CHALLENGE_PREFS = "challenge_state";
             SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
@@ -185,7 +183,7 @@ public class BothTypesQuestionActivity extends Activity {
                     // Actions to do after specified wait time
                     finish();
                 }
-            }, 2200);
+            }, WAIT_DELAY);
         } else {
             if (chosenChoice.getText().equals(answer)) {
                 view.setBackgroundResource(R.color.green);
@@ -196,6 +194,8 @@ public class BothTypesQuestionActivity extends Activity {
                 Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
             }
 
+            stopCountDownTimer();
+
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
@@ -203,7 +203,7 @@ public class BothTypesQuestionActivity extends Activity {
                     updateScore(score);
                     updateQuestion();
                 }
-            }, 2200);
+            }, WAIT_DELAY);
         }
     }
 
@@ -227,7 +227,7 @@ public class BothTypesQuestionActivity extends Activity {
                         updateScore(score);
                         updateQuestion();
                     }
-                }, 2200);
+                }, WAIT_DELAY);
             }
 
         }.start();
