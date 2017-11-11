@@ -1,91 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/darker_grey"
+    android:orientation="vertical"
     tools:context="com.a0122554m.kohweilun.projectassignment.MainActivity">
 
-    <ScrollView
+    <!-- facebook logout button -->
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <!-- facebook logout button -->
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="30dp" />
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/LessonListButton"
-            android:layout_width="match_parent"
+            android:id="@+id/lessons_imageButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/login_button"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:drawableTop="@drawable/lessons_redlogo96"
             android:onClick="onClick_GoToLessonList"
-            android:text="@string/lesson_list_button" />
+            android:text="@string/lesson_list_button"
+            android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/ChallengeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/LessonListButton"
-            android:onClick="onClick_GoToChallengeQuizCodeActivity"
-            android:text="@string/challenge_button" />
-
-        <Button
-            android:id="@+id/ChallengeResultsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ChallengeButton"
-            android:onClick="onClick_GoToPastChallengeResultsActivity"
-            android:text="@string/challenge_results_button" />
-
-        <ImageButton
             android:id="@+id/revision_imageButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ChallengeResultsButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:background="@color/transparent"
+            android:drawableTop="@drawable/revision_bluelogo96"
             android:onClick="onClick_GoToRevisionListActivity"
-            android:src="@drawable/revision_bluelogo" />
+            android:text="@string/revision"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/revision_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/revision_imageButton"
-            android:layout_centerHorizontal="true"
-            android:onClick="onClick_GoToRevisionListActivity"
-            android:text="@string/revision" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/links_imageButton"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/challenge_quiz_imageButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/revision_textView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:background="@color/transparent"
-            android:onClick="onClick_GoToLinks"
-            android:src="@drawable/useful_96" />
+            android:drawableTop="@drawable/challenge_quiz_greenlogo96"
+            android:onClick="onClick_GoToChallengeQuizCodeActivity"
+            android:text="@string/challenge_button"
+            android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/links_textView"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/challenge_leaderboard_imageButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/links_imageButton"
-            android:layout_centerHorizontal="true"
-            android:onClick="onClick_GoToLinks"
-            android:text="@string/useful_links" />
-        </RelativeLayout>
-    </ScrollView>
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:drawableTop="@drawable/challenge_leaderboard_redlogo96"
+            android:onClick="onClick_GoToPastChallengeResultsActivity"
+            android:text="@string/challenge_results_button"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/links_imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="3"
+        android:background="@color/transparent"
+        android:drawableTop="@drawable/useful_links_yellowlogo96"
+        android:onClick="onClick_GoToLinks"
+        android:text="@string/useful_links"
+        android:textColor="@color/white" />
+</LinearLayout>

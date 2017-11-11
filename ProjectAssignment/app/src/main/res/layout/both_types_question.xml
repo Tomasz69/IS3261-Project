@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@color/darker_grey"
     tools:context="com.a0122554m.kohweilun.projectassignment.BothTypesQuestionActivity">
 
     <LinearLayout
@@ -16,17 +18,19 @@
         <TextView
             android:id="@+id/score_text"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:text="@string/score_text"
+            android:textColor="@color/white"
             android:textSize="32sp" />
 
         <TextView
             android:id="@+id/score"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:text="@string/score_num"
+            android:textColor="@color/white"
             android:textSize="32sp" />
     </LinearLayout>
 
@@ -34,8 +38,9 @@
         android:id="@+id/question"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:text="@string/text_default"
+        android:textColor="@color/white"
         android:textSize="24sp" />
 
     <Button
@@ -44,6 +49,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/text_default"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"
+        android:background="@color/light_grey"
+        android:textColor="@color/lime_green"
         android:onClick="onClick_SubmitAnswer" />
 
     <Button
@@ -52,6 +61,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/text_default"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"
+        android:background="@color/light_grey"
+        android:textColor="@color/lime_green"
         android:onClick="onClick_SubmitAnswer" />
 
     <Button
@@ -60,6 +73,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/text_default"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"
+        android:background="@color/light_grey"
+        android:textColor="@color/lime_green"
         android:onClick="onClick_SubmitAnswer" />
 
     <Button
@@ -68,6 +85,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/text_default"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"
+        android:background="@color/light_grey"
+        android:textColor="@color/lime_green"
         android:onClick="onClick_SubmitAnswer" />
 
 </LinearLayout>

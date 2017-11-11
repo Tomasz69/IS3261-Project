@@ -4,83 +4,129 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@color/darker_grey"
     android:id="@+id/linearLayoutLessonsList"
     tools:context="com.a0122554m.kohweilun.projectassignment.PDFLessonsList">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/lessonButton1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button1" />
-
-
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button1"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button2" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button2"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button3" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button3"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button4" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button4"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button5" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button5"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button6" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button6"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button7" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button7"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button8" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button8"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button9" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button9"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
+
             <Button
                 android:id="@+id/lessonButton10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button10" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button10"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/lessonButton11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lesson_button11" />
+                android:layout_marginTop="15dp"
+                android:background="@color/green"
+                android:text="@string/lesson_button11"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
