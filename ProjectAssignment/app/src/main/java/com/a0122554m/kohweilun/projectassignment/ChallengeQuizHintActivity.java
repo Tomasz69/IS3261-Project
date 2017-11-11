@@ -377,29 +377,35 @@ public class ChallengeQuizHintActivity extends Activity implements
     @Override
     public void onStart() {
         super.onStart();
-        if (question_type == 2) {
-            mGoogleApiClient.connect();
+        if(!questionDone) {
+            if (question_type == 2) {
+                mGoogleApiClient.connect();
+            }
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (question_type == 2) {
-            mGoogleApiClient.disconnect();
+        if(!questionDone) {
+            if (question_type == 2) {
+                mGoogleApiClient.disconnect();
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (question_type == 2) {
-            if (mGoogleApiClient.isConnected()) {
-                if (ContextCompat.checkSelfPermission(this,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
-                                    mGoogleApiClient, mLocationRequest, this);
+        if(!questionDone) {
+            if (question_type == 2) {
+                if (mGoogleApiClient.isConnected()) {
+                    if (ContextCompat.checkSelfPermission(this,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                                mGoogleApiClient, mLocationRequest, this);
+                    }
                 }
             }
         }
