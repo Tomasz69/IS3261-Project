@@ -34,13 +34,7 @@ public class ChallengeQuestionListAdapter extends ArrayAdapter<String> {
                     more_details[i] = "Beacon";
                     break;
                 case (2):
-                    more_details[i] = "Beacon with QR code";
-                    break;
-                case (3):
-                    more_details[i] = "GPS location";
-                    break;
-                case (4):
-                    more_details[i] = "GPS location with QR code";
+                    more_details[i] = "GPS";
                     break;
             }
         }
