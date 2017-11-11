@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class RevisionListActivity extends Activity {
+public class PDFLessonsListActivity extends Activity {
+
     private String[] filesList = {
             "lesson01_introduction.pdf",
             "lesson02_android_intro.pdf",
@@ -24,8 +25,8 @@ public class RevisionListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.revision_list);
-        this.setTitle(R.string.revision_title);
+        setContentView(R.layout.pdf_lessons_list);
+        this.setTitle(R.string.lesson_title);
 
         String[] titlesList = {
                 getResources().getString(R.string.lesson_button1),
@@ -53,10 +54,12 @@ public class RevisionListActivity extends Activity {
                 findViewById(R.id.lessonButton10),
                 findViewById(R.id.lessonButton11)
         };
+
+
         int i;
         for (i = 0; i < filesList.length; i++){
             Button button = buttons[i];
-            final Intent intent = new Intent(this, BothTypesQuestionActivity.class);
+            final Intent intent = new Intent(this, PDFActivity.class);
             intent.putExtra("fileName", filesList[i]);
             intent.putExtra("title", titlesList[i]);
             button.setOnClickListener(new View.OnClickListener(){

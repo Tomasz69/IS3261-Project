@@ -7,7 +7,7 @@
     android:padding="5dp"
     android:background="@color/darker_grey"
     android:id="@+id/linearLayoutLessonsList"
-    tools:context="com.a0122554m.kohweilun.projectassignment.PDFLessonsList">
+    tools:context="com.a0122554m.kohweilun.projectassignment.PDFLessonsListActivity">
 
     <ScrollView
         android:layout_width="match_parent"

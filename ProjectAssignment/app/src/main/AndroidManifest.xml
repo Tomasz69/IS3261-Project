@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".PDFLessonsList" />
+        <activity android:name=".PDFLessonsListActivity" />
         <activity android:name=".PDFActivity" />
         <activity android:name=".ChallengeQuizHintActivity" />
         <activity android:name=".OldChallengeQuizQuestionActivity" />
