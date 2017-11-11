@@ -98,6 +98,14 @@ public class BothTypesQuestionActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if (!challengeQuiz) {
+            stopCountDownTimer();
+        }
+        super.onDestroy();
+    }
+
     private void updateQuestion() {
         ArrayList<Integer> randomOptions = new ArrayList<Integer>();
         for (int i = 0; i < 4; i++) {

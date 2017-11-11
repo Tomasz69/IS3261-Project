@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/darker_grey"
     tools:context="com.a0122554m.kohweilun.projectassignment.LoginActivity">
 
@@ -11,6 +12,14 @@
         android:id="@+id/login_page_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
-</RelativeLayout>
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/login_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:src="@drawable/padawan_yoda_logo" />
+</LinearLayout>
