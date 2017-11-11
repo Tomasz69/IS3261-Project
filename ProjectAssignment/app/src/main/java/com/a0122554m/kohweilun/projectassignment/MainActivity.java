@@ -74,8 +74,9 @@ public class MainActivity extends Activity {
                 }
             }
         };
-        syncLessonProgress();
-        syncRevisionProgress();
+
+//        syncLessonProgress();
+//        syncRevisionProgress();
     }
 
     private void syncLessonProgress(){

@@ -5,37 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/darker_grey"
+    android:padding="5dp"
     tools:context="com.a0122554m.kohweilun.projectassignment.ChallengeQuizHintActivity">
-
-
 
     <ImageView
         android:id="@+id/imageHint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:src="@drawable/android_logo" />
-
-    <Button
-        android:id="@+id/scanQRorGoQuestionButton"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/scan_qr_code_button"
-        android:onClick="onClick_scanQR_or_goQuestion"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/additionalInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        <Button
+            android:id="@+id/scanQRorGoQuestionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/scan_qr_code_button"
+            android:background="@color/green"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:layout_marginTop="20dp"
+            android:onClick="onClick_scanQR_or_goQuestion"/>
 
+        <TextView
+            android:id="@+id/additionalInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="16dp"
+            android:textSize="16sp"
+            android:textColor="@color/greyish_white"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/rssi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+    <!--<TextView-->
+        <!--android:id="@+id/rssi"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--tools:layout_editor_absoluteX="16dp"-->
+        <!--tools:layout_editor_absoluteY="16dp" />-->
 
 </LinearLayout>

@@ -3,11 +3,13 @@ package com.a0122554m.kohweilun.projectassignment;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,13 +49,13 @@ public class BothTypesQuestionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.both_types_question);
 
-        scoreView = (TextView)findViewById(R.id.score);
-        scoreTextView = (TextView)findViewById(R.id.score_text);
-        questionView = (TextView)findViewById(R.id.question);
-        buttonChoice1 = (Button)findViewById(R.id.choice1);
-        buttonChoice2 = (Button)findViewById(R.id.choice2);
-        buttonChoice3 = (Button)findViewById(R.id.choice3);
-        buttonChoice4 = (Button)findViewById(R.id.choice4);
+        scoreView = (TextView) findViewById(R.id.score);
+        scoreTextView = (TextView) findViewById(R.id.score_text);
+        questionView = (TextView) findViewById(R.id.question);
+        buttonChoice1 = (Button) findViewById(R.id.choice1);
+        buttonChoice2 = (Button) findViewById(R.id.choice2);
+        buttonChoice3 = (Button) findViewById(R.id.choice3);
+        buttonChoice4 = (Button) findViewById(R.id.choice4);
 
         challengeQuiz = getIntent().getBooleanExtra("challenge", false);
 
@@ -92,6 +94,11 @@ public class BothTypesQuestionActivity extends Activity {
         }
         Collections.shuffle(randomOptions);
 
+        buttonChoice1.setBackgroundResource(R.color.light_grey);
+        buttonChoice2.setBackgroundResource(R.color.light_grey);
+        buttonChoice3.setBackgroundResource(R.color.light_grey);
+        buttonChoice4.setBackgroundResource(R.color.light_grey);
+
         if (challengeQuiz) {
             questionView.setText(QUESTION);
             buttonChoice1.setText(ANSWERS[randomOptions.get(0)]);
@@ -127,7 +134,7 @@ public class BothTypesQuestionActivity extends Activity {
     }
 
     public void onClick_SubmitAnswer(View view) {
-        Button chosenChoice = (Button)view;
+        Button chosenChoice = (Button) view;
         if (challengeQuiz) {
             final String CHALLENGE_PREFS = "challenge_state";
             SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
@@ -137,29 +144,46 @@ public class BothTypesQuestionActivity extends Activity {
             int currentScore = challengePreferences.getInt(CHALLENGE_CODE + "SCORE", 0);
             System.out.println("Current score before marking question: " + currentScore);
             if (chosenChoice.getText().equals(CORRECT)) {
+                view.setBackgroundResource(R.color.green);
                 Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
                 currentScore++;
                 editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
                 editor.commit();
                 System.out.println("Current score after marking question correct: " + currentScore);
             } else {
+                view.setBackgroundColor(Color.RED);
                 Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
                 System.out.println("Current score after marking question wrong: " + currentScore);
             }
 //            Intent challengeQuizList = new Intent(this, ChallengeQuizQuestionListActivity.class);
 //            challengeQuizList.putExtra("challengeQuizCode", CHALLENGE_CODE);
 //            startActivity(challengeQuizList);
-            finish();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    // Actions to do after specified wait time
+                    finish();
+                }
+            }, 2200);
         } else {
             if (chosenChoice.getText().equals(answer)) {
+                view.setBackgroundResource(R.color.green);
                 score++;
                 Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
             } else {
+                view.setBackgroundColor(Color.RED);
                 Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
             }
 
-            updateScore(score);
-            updateQuestion();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    // Actions to do after specified wait time
+                    updateScore(score);
+                    updateQuestion();
+                }
+            }, 2200);
         }
     }
 }

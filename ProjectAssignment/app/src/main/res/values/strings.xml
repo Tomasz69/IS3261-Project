@@ -4,7 +4,7 @@
     <string name="fb_login_protocol_scheme">fb211290756075038</string>
 
     <!--For viewing PDF lessons-->
-    <string name="lesson_list_button">Lessons List</string>
+    <string name="lesson_list_button">Lessons</string>
     <string name="lesson_button1">Course Introduction</string>
     <string name="lesson_button2">Introduction to Android</string>
     <string name="lesson_button3">SQLite</string>
@@ -25,8 +25,8 @@
     <!--Navigation buttons-->
     <string name="useful_links">Useful Links</string>
     <string name="revision">Revision Quiz</string>
-    <string name="challenge_button">Join Challenge Quiz</string>
-    <string name="challenge_results_button">Past Challenge Results</string>
+    <string name="challenge_button">Join Challenge</string>
+    <string name="challenge_results_button">Leaderboard</string>
 
     <!--Challenge Quiz Activity-->
     <string name="scan_qr_code_button">Scan QR Code</string>
@@ -44,12 +44,12 @@
     <!--Titles-->
     <string name="app_name">Padawan Academy</string>
     <string name="login_title">Padawan Academy Login</string>
-    <string name="main_title">Padawan Academy Main</string>
+    <string name="main_title">Welcome to Padawan Academy</string>
     <string name="lesson_title">Lessons</string>
     <string name="revision_title">Revision Quiz</string>
     <string name="challenge_title">Challenge Quiz</string>
     <string name="useful_title">Useful Links</string>
-    <string name="past_title">Past Challenge Results</string>
+    <string name="past_title">Leaderboard</string>
 
     <!--All remaining Toasts, TextViews and Buttons-->
     <string name="both_type_revision_complete_question">"You have successfully completed this quiz!"</string>
@@ -81,14 +81,6 @@
     <string name="useful_desc3">Welcome to the open-source CodePath Android Cliffnotes! Our goal is to become the central crowdsourced resource for complete and up-to-date practical Android developer guides for any topic.</string>
     <string name="useful_desc4">200 video tutorials that focus on individual aspects of Android development, starting with downloading and installing the SDK. Most videos are around 5 minutes long so they can be enjoyed during a short break.</string>
     <string name="useful_desc5">Derek has posted video tutorials on a number of subjects. Currently there are 26 tutorials on Android development.</string>
-    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
-
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
 

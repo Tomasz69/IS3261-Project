@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/darker_grey"
+    android:padding="5dp"
     tools:context="com.a0122554m.kohweilun.projectassignment.ChallengeQuizQuestionListActivity">
 
 
@@ -12,14 +14,17 @@
         android:id="@+id/questions_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"/>
+        android:layout_weight="6"/>
 
     <Button
         android:id="@+id/endChallengeButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:onClick="onClick_endParticipation"
         android:text="@string/end_challenge_button"
-        android:layout_weight="1"/>
+        android:textAllCaps="false"
+        android:background="@color/green"
+        android:textSize="18sp" />
 
 </LinearLayout>

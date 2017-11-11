@@ -17,6 +17,8 @@ public class UsefulLinksActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.useful_links_list);
+        this.setTitle(R.string.useful_title);
+
         final String[] itemname = {
                 getResources().getString(R.string.useful_item1),
                 getResources().getString(R.string.useful_item2),
