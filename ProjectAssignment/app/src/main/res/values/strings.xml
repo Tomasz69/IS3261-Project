@@ -34,8 +34,10 @@
     <string name="end_challenge_button">End Participation</string>
 
     <!--Revision Quiz Activity-->
+    <string name="question_text">Question: </string>
+    <string name="question_number">1 / 1</string>
     <string name="score_text">Score: </string>
-    <string name="score_num">0 / 0</string>
+    <string name="score_num">0</string>
     <string name="text_default">Default</string>
 
     <!--Highscore Activity-->
@@ -43,7 +45,7 @@
 
     <!--Titles-->
     <string name="app_name">Padawan Academy</string>
-    <string name="login_title">Padawan Academy Login</string>
+    <string name="login_title">Login</string>
     <string name="main_title">Welcome to Padawan Academy</string>
     <string name="lesson_title">Lessons</string>
     <string name="revision_title">Revision Quiz</string>

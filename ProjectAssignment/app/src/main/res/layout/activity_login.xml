@@ -22,4 +22,15 @@
         android:layout_height="0dp"
         android:layout_weight="6"
         android:src="@drawable/padawan_yoda_logo" />
+
+    <TextView
+        android:id="@+id/app_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:gravity="top|center_horizontal"
+        android:textSize="48sp"
+        android:textColor="@color/lime_green"
+        android:fontFamily="cursive"
+        android:textStyle="bold" />
 </LinearLayout>

@@ -3,7 +3,6 @@ package com.a0122554m.kohweilun.projectassignment;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -27,6 +26,8 @@ public class BothTypesQuestionActivity extends Activity {
     private Button buttonChoice4;
     private TextView scoreView;
     private TextView scoreTextView;
+    private TextView questionText_tv;
+    private TextView questionNum_tv;
     private TextView questionView;
 
     //challenge quiz
@@ -58,8 +59,10 @@ public class BothTypesQuestionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.both_types_question);
 
-        scoreView = (TextView) findViewById(R.id.score);
+        questionText_tv = (TextView) findViewById(R.id.question_text);
+        questionNum_tv = (TextView) findViewById(R.id.question_number);
         scoreTextView = (TextView) findViewById(R.id.score_text);
+        scoreView = (TextView) findViewById(R.id.score);
         questionView = (TextView) findViewById(R.id.question);
         buttonChoice1 = (Button) findViewById(R.id.choice1);
         buttonChoice2 = (Button) findViewById(R.id.choice2);
@@ -75,6 +78,8 @@ public class BothTypesQuestionActivity extends Activity {
             ANSWERS = getIntent().getStringArrayExtra("answers");
             CORRECT = getIntent().getStringExtra("correct");
             CHALLENGE_CODE = getIntent().getStringExtra("code");
+            questionText_tv.setText("");
+            questionNum_tv.setText("");
             scoreTextView.setText("Question:");
             scoreView.setText("");
             updateQuestion();
@@ -113,10 +118,10 @@ public class BothTypesQuestionActivity extends Activity {
         }
         Collections.shuffle(randomOptions);
 
-        buttonChoice1.setBackgroundResource(R.color.light_grey);
-        buttonChoice2.setBackgroundResource(R.color.light_grey);
-        buttonChoice3.setBackgroundResource(R.color.light_grey);
-        buttonChoice4.setBackgroundResource(R.color.light_grey);
+        buttonChoice1.setBackgroundResource(R.drawable.drawable_rectangle_round_both);
+        buttonChoice2.setBackgroundResource(R.drawable.drawable_rectangle_round_both);
+        buttonChoice3.setBackgroundResource(R.drawable.drawable_rectangle_round_both);
+        buttonChoice4.setBackgroundResource(R.drawable.drawable_rectangle_round_both);
 
         if (challengeQuiz) {
             questionView.setText(QUESTION);
@@ -131,6 +136,7 @@ public class BothTypesQuestionActivity extends Activity {
                 // call to start the count down timer
                 startCountDownTimer();
 
+                updateQuestionCount(questionNumber+1);
                 questionView.setText(revisionQuestionBank.getQuestion(randomQuestions.get(questionNumber)));
                 buttonChoice1.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(0)));
                 buttonChoice2.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(1)));
@@ -140,7 +146,7 @@ public class BothTypesQuestionActivity extends Activity {
                 questionNumber++;
             } else {
                 stopCountDownTimer();
-                Toast.makeText(this, getResources().getString(R.string.both_type_revision_complete_question), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.both_type_revision_complete_question), Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(this, RevisionHighscoreActivity.class);
                 intent.putExtra("lesson", lesson);
@@ -155,7 +161,11 @@ public class BothTypesQuestionActivity extends Activity {
     }
 
     private void updateScore(int score) {
-        scoreView.setText("" + score + " / " + revisionQuestionBank.getNumQuestions());
+        scoreView.setText("" + score);
+    }
+
+    private void updateQuestionCount(int question) {
+        questionNum_tv.setText("" + question + " / " + revisionQuestionBank.getNumQuestions());
     }
 
     public void onClick_SubmitAnswer(View view) {
@@ -170,14 +180,14 @@ public class BothTypesQuestionActivity extends Activity {
             int currentScore = challengePreferences.getInt(CHALLENGE_CODE + "SCORE", 0);
             System.out.println("Current score before marking question: " + currentScore);
             if (chosenChoice.getText().equals(CORRECT)) {
-                view.setBackgroundResource(R.color.green);
+                view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
                 Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
                 currentScore++;
                 editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
                 editor.commit();
                 System.out.println("Current score after marking question correct: " + currentScore);
             } else {
-                view.setBackgroundColor(Color.RED);
+                view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
                 Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
                 System.out.println("Current score after marking question wrong: " + currentScore);
             }
@@ -194,11 +204,11 @@ public class BothTypesQuestionActivity extends Activity {
             }, WAIT_DELAY);
         } else {
             if (chosenChoice.getText().equals(answer)) {
-                view.setBackgroundResource(R.color.green);
+                view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
                 score++;
                 Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
             } else {
-                view.setBackgroundColor(Color.RED);
+                view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
                 Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
             }
 

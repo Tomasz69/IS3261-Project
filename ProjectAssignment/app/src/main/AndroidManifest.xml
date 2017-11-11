@@ -41,14 +41,15 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".PDFLessonsListActivity" />
-        <activity android:name=".PDFActivity" />
+        <activity android:name=".PDFActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ChallengeQuizHintActivity" />
-        <activity android:name=".OldChallengeQuizQuestionActivity" />
         <activity android:name=".ChallengeQuizQuestionListActivity" />
         <activity android:name=".UsefulLinksActivity" />
         <activity android:name=".RevisionListActivity"
                   android:launchMode="singleTop"/>
-        <activity android:name=".BothTypesQuestionActivity" />
+        <activity android:name=".BothTypesQuestionActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".RevisionHighscoreActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

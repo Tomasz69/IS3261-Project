@@ -53,6 +53,7 @@ public class RevisionListActivity extends Activity {
                 findViewById(R.id.lessonButton10),
                 findViewById(R.id.lessonButton11)
         };
+
         int i;
         for (i = 0; i < filesList.length; i++){
             Button button = buttons[i];

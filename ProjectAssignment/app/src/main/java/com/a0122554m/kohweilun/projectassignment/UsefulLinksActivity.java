@@ -60,9 +60,9 @@ public class UsefulLinksActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // TODO Auto-generated method stub
-                String Selecteditem = itemname[+position];
-                Toast.makeText(getApplicationContext(), "Linking to " + Selecteditem + " ...", Toast.LENGTH_SHORT).show();
-                Uri uri = Uri.parse(url[+position]);
+                String Selecteditem = itemname[position];
+                Toast.makeText(getApplicationContext(), "Linking to " + Selecteditem + " ...", Toast.LENGTH_LONG).show();
+                Uri uri = Uri.parse(url[position]);
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
             }
         });
