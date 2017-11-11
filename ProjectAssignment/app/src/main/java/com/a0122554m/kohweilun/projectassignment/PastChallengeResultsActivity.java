@@ -80,6 +80,7 @@ public class PastChallengeResultsActivity extends Activity {
                 //for results not published yet
                 if (numOfResults == 0){
                     pastChallengeTV.setText(getResources().getString(R.string.past_no_results_found));
+                    pastChallengeTV.setTextSize(20);
                 }
                 challenge_codes = new String[numOfResults];
                 challenge_results = new String[numOfResults];

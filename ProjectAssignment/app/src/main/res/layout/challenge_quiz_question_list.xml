@@ -9,6 +9,13 @@
     android:padding="5dp"
     tools:context="com.a0122554m.kohweilun.projectassignment.ChallengeQuizQuestionListActivity">
 
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="0sp"
+        android:textColor="@color/lime_green" />
 
     <ListView
         android:id="@+id/questions_list"

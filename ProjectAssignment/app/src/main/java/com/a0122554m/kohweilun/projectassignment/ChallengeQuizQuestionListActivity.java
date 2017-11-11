@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -31,12 +33,35 @@ public class ChallengeQuizQuestionListActivity extends Activity {
     private SharedPreferences appPreferences;
     private int user_id;
 
+    TextView timerTextView;
+    long startTime = 0;
+    long duration = 0;
+
+    //runs without a timer by reposting this handler at the end of the runnable
+    Handler timerHandler = new Handler();
+    Runnable timerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            duration = System.currentTimeMillis() - startTime;
+            int seconds = (int) (duration / 1000);
+            int minutes = seconds / 60;
+            seconds = seconds % 60;
+
+            timerTextView.setText(String.format("%d:%02d", minutes, seconds));
+            timerTextView.setTextSize(15);
+
+            timerHandler.postDelayed(this, 500);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.challenge_quiz_question_list);
         appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
         user_id = appPreferences.getInt("user_id",0);
+        timerTextView = (TextView) findViewById(R.id.timerTextView);
 
         question_nums = getIntent().getStringArrayExtra("question_nums");
         question_ids = getIntent().getIntArrayExtra("question_ids");
@@ -52,6 +77,7 @@ public class ChallengeQuizQuestionListActivity extends Activity {
         final String CHALLENGE_PREFS = "challenge_state";
         SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
         int finalScore = challengePreferences.getInt(challengeQuizCode + "SCORE", 0);
+        timerHandler.removeCallbacks(timerRunnable);
         EndParticipationAsyncTask endParticipationAsyncTask = new EndParticipationAsyncTask();
         endParticipationAsyncTask.execute("http://192.168.137.1:3000/api/Questions/endChallengeParticipation?" +
                 "_question_code=" + challengeQuizCode + "&user_id=" + user_id + "&_score=" + finalScore);
@@ -136,6 +162,7 @@ public class ChallengeQuizQuestionListActivity extends Activity {
                 hintIntent.putExtra("correct", question_corrects[position]);
                 hintIntent.putExtra("type", question_types[position]);
                 hintIntent.putExtra("code", challengeQuizCode);
+                hintIntent.putExtra("duration", duration);
                 startActivity(hintIntent);
             }
         });

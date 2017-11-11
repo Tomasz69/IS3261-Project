@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 public class BothTypesQuestionActivity extends Activity {
     private RevisionQuestionBank revisionQuestionBank = new RevisionQuestionBank();
@@ -43,6 +46,11 @@ public class BothTypesQuestionActivity extends Activity {
 
     private ArrayList<Integer> randomQuestions = new ArrayList<Integer>();
 
+    private ProgressBar progressBarCircle;
+    private TextView textViewTime;
+    private CountDownTimer countDownTimer;
+    private long timeCountInMilliSeconds = 11 * 1000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,9 @@ public class BothTypesQuestionActivity extends Activity {
         buttonChoice2 = (Button) findViewById(R.id.choice2);
         buttonChoice3 = (Button) findViewById(R.id.choice3);
         buttonChoice4 = (Button) findViewById(R.id.choice4);
+
+        progressBarCircle = (ProgressBar) findViewById(R.id.progressBarCircle);
+        textViewTime = (TextView) findViewById(R.id.textViewTime);
 
         challengeQuiz = getIntent().getBooleanExtra("challenge", false);
 
@@ -107,6 +118,11 @@ public class BothTypesQuestionActivity extends Activity {
             buttonChoice4.setText(ANSWERS[randomOptions.get(3)]);
         } else {
             if (questionNumber < revisionQuestionBank.getNumQuestions()) {
+                // call to initialize the progress bar values
+                setProgressBarValues();
+                // call to start the count down timer
+                startCountDownTimer();
+
                 questionView.setText(revisionQuestionBank.getQuestion(randomQuestions.get(questionNumber)));
                 buttonChoice1.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(0)));
                 buttonChoice2.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(1)));
@@ -115,6 +131,7 @@ public class BothTypesQuestionActivity extends Activity {
                 answer = revisionQuestionBank.getCorrectAnswer(randomQuestions.get(questionNumber));
                 questionNumber++;
             } else {
+                stopCountDownTimer();
                 Toast.makeText(this, getResources().getString(R.string.both_type_revision_complete_question), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(this, RevisionHighscoreActivity.class);
@@ -134,6 +151,9 @@ public class BothTypesQuestionActivity extends Activity {
     }
 
     public void onClick_SubmitAnswer(View view) {
+        // call to start the count down timer
+        stopCountDownTimer();
+
         Button chosenChoice = (Button) view;
         if (challengeQuiz) {
             final String CHALLENGE_PREFS = "challenge_state";
@@ -185,5 +205,61 @@ public class BothTypesQuestionActivity extends Activity {
                 }
             }, 2200);
         }
+    }
+
+    private void startCountDownTimer() {
+        countDownTimer = new CountDownTimer(timeCountInMilliSeconds, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textViewTime.setText(hmsTimeFormatter(millisUntilFinished));
+                progressBarCircle.setProgress((int) (millisUntilFinished / 1000));
+            }
+
+            @Override
+            public void onFinish() {
+                stopCountDownTimer();
+                Toast.makeText(BothTypesQuestionActivity.this, "Time's up! Skipping to next question..", Toast.LENGTH_SHORT).show();
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        updateScore(score);
+                        updateQuestion();
+                    }
+                }, 2200);
+            }
+
+        }.start();
+    }
+
+    /**
+     * method to stop count down timer
+     */
+    private void stopCountDownTimer() {
+        countDownTimer.cancel();
+    }
+
+    /**
+     * method to set circular progress bar values
+     */
+    private void setProgressBarValues() {
+        progressBarCircle.setMax((int) timeCountInMilliSeconds / 1000);
+        progressBarCircle.setProgress((int) timeCountInMilliSeconds / 1000);
+    }
+
+    /**
+     * method to convert millisecond to time format
+     *
+     * @param milliSeconds
+     * @return HH:mm:ss time formatted string
+     */
+    private String hmsTimeFormatter(long milliSeconds) {
+        String hms = String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(milliSeconds),
+                TimeUnit.MILLISECONDS.toMinutes(milliSeconds) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(milliSeconds)),
+                TimeUnit.MILLISECONDS.toSeconds(milliSeconds) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliSeconds)));
+
+        return hms;
     }
 }
