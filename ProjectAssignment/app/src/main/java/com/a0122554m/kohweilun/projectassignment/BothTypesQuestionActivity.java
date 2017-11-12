@@ -1,12 +1,18 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,6 +51,7 @@ public class BothTypesQuestionActivity extends Activity {
     private int score = 0;
     private int questionNumber = 0;
     private String answer;
+    private String explanation = "Explanation goes here.";
 
     private ArrayList<Integer> randomQuestions = new ArrayList<Integer>();
 
@@ -181,47 +188,53 @@ public class BothTypesQuestionActivity extends Activity {
             System.out.println("Current score before marking question: " + currentScore);
             if (chosenChoice.getText().equals(CORRECT)) {
                 view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
-                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
                 currentScore++;
                 editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
                 editor.commit();
                 System.out.println("Current score after marking question correct: " + currentScore);
+
+                showMyDialog(this, "Correct!\n\n" + explanation);
             } else {
                 view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
-                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
                 System.out.println("Current score after marking question wrong: " + currentScore);
+
+                showMyDialog(this, "Wrong!\n\n" + explanation);
             }
 //            Intent challengeQuizList = new Intent(this, ChallengeQuizQuestionListActivity.class);
 //            challengeQuizList.putExtra("challengeQuizCode", CHALLENGE_CODE);
 //            startActivity(challengeQuizList);
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    // Actions to do after specified wait time
-                    finish();
-                }
-            }, WAIT_DELAY);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                public void run() {
+//                    // Actions to do after specified wait time
+//                    finish();
+//                }
+//            }, WAIT_DELAY);
         } else {
+            stopCountDownTimer();
+
             if (chosenChoice.getText().equals(answer)) {
                 view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
                 score++;
-                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
+                showMyDialog(this, "Correct!\n\n" + explanation);
             } else {
                 view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
-                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
+                showMyDialog(this, "Wrong!\n\n" + explanation);
             }
 
-            stopCountDownTimer();
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    // Actions to do after specified wait time
-                    updateScore(score);
-                    updateQuestion();
-                }
-            }, WAIT_DELAY);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                public void run() {
+//                    // Actions to do after specified wait time
+//                    updateScore(score);
+//                    updateQuestion();
+//                }
+//            }, WAIT_DELAY);
         }
     }
 
@@ -279,5 +292,37 @@ public class BothTypesQuestionActivity extends Activity {
                 TimeUnit.MILLISECONDS.toSeconds(milliSeconds) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliSeconds)));
 
         return hms;
+    }
+
+    private void showMyDialog(Context context, String text) {
+        final Dialog dialog = new Dialog(context) {
+            @Override
+            public boolean onTouchEvent(MotionEvent event) {
+                // Tap anywhere to close dialog.
+                this.cancel();
+                return true;
+            }
+        };
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.revision_quiz_dialog);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView textView = (TextView) dialog.findViewById(R.id.quiz_dialog);
+        textView.setText(text);
+
+        dialog.show();
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                if (!challengeQuiz) {
+                    updateScore(score);
+                    updateQuestion();
+                } else {
+                    finish();
+                }
+            }
+        });
     }
 }
