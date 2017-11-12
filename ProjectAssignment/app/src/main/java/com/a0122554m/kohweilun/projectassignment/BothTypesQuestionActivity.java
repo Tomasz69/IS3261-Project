@@ -75,6 +75,8 @@ public class BothTypesQuestionActivity extends Activity {
         buttonChoice2 = (Button) findViewById(R.id.choice2);
         buttonChoice3 = (Button) findViewById(R.id.choice3);
         buttonChoice4 = (Button) findViewById(R.id.choice4);
+        progressBarCircle = (ProgressBar) findViewById(R.id.progressBarCircle);
+        textViewTime = (TextView) findViewById(R.id.textViewTime);
 
         challengeQuiz = getIntent().getBooleanExtra("challenge", false);
 
@@ -85,17 +87,19 @@ public class BothTypesQuestionActivity extends Activity {
             ANSWERS = getIntent().getStringArrayExtra("answers");
             CORRECT = getIntent().getStringExtra("correct");
             CHALLENGE_CODE = getIntent().getStringExtra("code");
+            progressBarCircle.setVisibility(View.INVISIBLE);
+            textViewTime.setVisibility(View.INVISIBLE);
             questionText_tv.setText("");
-            questionNum_tv.setText("");
-            scoreTextView.setText("Question:");
+            questionNum_tv.setText("Question:");
+            questionNum_tv.setTextSize(27);
+            scoreTextView.setText("");
             scoreView.setText("");
             updateQuestion();
         } else {
             this.setTitle(R.string.revision_title);
             lesson = getIntent().getStringExtra("title");
             fileName = getIntent().getStringExtra("fileName");
-            progressBarCircle = (ProgressBar) findViewById(R.id.progressBarCircle);
-            textViewTime = (TextView) findViewById(R.id.textViewTime);
+
             revisionQuestionBank.initQuestions(getApplicationContext(), lesson);
 
             max_score = revisionQuestionBank.getNumQuestions();
