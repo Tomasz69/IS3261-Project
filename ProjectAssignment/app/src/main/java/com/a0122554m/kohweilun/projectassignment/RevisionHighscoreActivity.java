@@ -50,6 +50,7 @@ public class RevisionHighscoreActivity extends Activity {
     public void onClick_GoBackToRevisionListActivity(View view) {
         Intent intent = new Intent(this, RevisionListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         finish();
         startActivity(intent);
     }

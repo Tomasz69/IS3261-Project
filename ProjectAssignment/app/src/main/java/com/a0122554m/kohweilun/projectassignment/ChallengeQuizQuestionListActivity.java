@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,6 +17,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ChallengeQuizQuestionListActivity extends Activity {
 
@@ -34,31 +35,18 @@ public class ChallengeQuizQuestionListActivity extends Activity {
     private int user_id;
 
     TextView timerTextView;
-    long startTime = 0;
+    long startTime = System.currentTimeMillis();
     long duration = 0;
 
-    //runs without a timer by reposting this handler at the end of the runnable
-    Handler timerHandler = new Handler();
-    Runnable timerRunnable = new Runnable() {
 
-        @Override
-        public void run() {
-            duration = System.currentTimeMillis() - startTime;
-            int seconds = (int) (duration / 1000);
-            int minutes = seconds / 60;
-            seconds = seconds % 60;
-
-            timerTextView.setText(String.format("%d:%02d", minutes, seconds));
-            timerTextView.setTextSize(15);
-
-            timerHandler.postDelayed(this, 500);
-        }
-    };
+    private static final long INTERVAL = 500;
+    Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.challenge_quiz_question_list);
+        this.setTitle(R.string.challenge_list_title);
         appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
         user_id = appPreferences.getInt("user_id",0);
         timerTextView = (TextView) findViewById(R.id.timerTextView);
@@ -71,13 +59,42 @@ public class ChallengeQuizQuestionListActivity extends Activity {
         question_types = getIntent().getIntArrayExtra("question_types");
         challengeQuizCode = getIntent().getStringExtra("challengeQuizCode");
         setUpList();
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                duration = System.currentTimeMillis() - startTime;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int seconds = (int) (duration / 1000);
+                        int minutes = seconds / 60;
+                        int hours = minutes / 60;
+                        seconds = seconds % 60;
+                        minutes = minutes % 60;
+
+                        timerTextView.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+                    }
+                });
+
+            }
+        }, 0, INTERVAL);
+    }
+
+    @Override
+    protected void onDestroy() {
+        timer.cancel();
+        timer.purge();
+        super.onDestroy();
     }
 
     public void onClick_endParticipation(View view){
         final String CHALLENGE_PREFS = "challenge_state";
         SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
         int finalScore = challengePreferences.getInt(challengeQuizCode + "SCORE", 0);
-        timerHandler.removeCallbacks(timerRunnable);
+        timer.cancel();
+        timer.purge();
         EndParticipationAsyncTask endParticipationAsyncTask = new EndParticipationAsyncTask();
         endParticipationAsyncTask.execute("http://192.168.137.1:3000/api/Questions/endChallengeParticipation?" +
                 "_question_code=" + challengeQuizCode + "&user_id=" + user_id + "&_score=" + finalScore);

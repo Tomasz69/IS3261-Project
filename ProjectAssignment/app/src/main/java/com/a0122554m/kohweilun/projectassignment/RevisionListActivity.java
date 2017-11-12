@@ -1,12 +1,18 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 
 public class RevisionListActivity extends Activity {
+    public static final String HIGHSCORE_PREFS = "progress_state";
+    SharedPreferences sharedPreferences;
+
     private String[] filesList = {
             "lesson01_introduction.pdf",
             "lesson02_android_intro.pdf",
@@ -26,6 +32,8 @@ public class RevisionListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.revision_list);
         this.setTitle(R.string.revision_title);
+
+        sharedPreferences = getSharedPreferences(HIGHSCORE_PREFS, Context.MODE_PRIVATE);
 
         String[] titlesList = {
                 getResources().getString(R.string.lesson_button1),
@@ -57,7 +65,11 @@ public class RevisionListActivity extends Activity {
         int i;
         for (i = 0; i < filesList.length; i++){
             Button button = buttons[i];
+            String title = titlesList[i];
+            int high_score = sharedPreferences.getInt(filesList[i] + "_highscore", 0);
+            button.setText(Html.fromHtml(title + "<br/><small>Highscore : " + high_score + "</small>"));
             final Intent intent = new Intent(this, BothTypesQuestionActivity.class);
+
             intent.putExtra("fileName", filesList[i]);
             intent.putExtra("title", titlesList[i]);
             button.setOnClickListener(new View.OnClickListener(){

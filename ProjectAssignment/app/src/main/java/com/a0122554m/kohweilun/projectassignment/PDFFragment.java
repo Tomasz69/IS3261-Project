@@ -193,6 +193,7 @@ public class PDFFragment extends Fragment {
         if (index > furthestPage) {
             furthestPage = index;
             updateFurthest(furthestPage);
+            updateProgress(furthestPage);
 //            Toast.makeText(getActivity(), "Furthest page: " + furthestPage, Toast.LENGTH_SHORT).show();
         }
 
@@ -244,6 +245,15 @@ public class PDFFragment extends Fragment {
     public void updateFurthest(int furthestPage) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(FILENAME + "_FURTHEST", furthestPage);
+        editor.commit();
+    }
+
+    public void updateProgress(int furthestPage) {
+        float percentage = (float) furthestPage / getPageCount() * 100;
+        System.out.println(percentage);
+        int progress = Math.round(percentage);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(FILENAME + "_PROGRESS", progress);
         editor.commit();
     }
 }

@@ -1,12 +1,17 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 
 public class PDFLessonsListActivity extends Activity {
+    public static final String PROGRESS_PREFS = "progress_state";
+    SharedPreferences sharedPreferences;
 
     private String[] filesList = {
             "lesson01_introduction.pdf",
@@ -28,6 +33,21 @@ public class PDFLessonsListActivity extends Activity {
         setContentView(R.layout.pdf_lessons_list);
         this.setTitle(R.string.lesson_title);
 
+        initialize();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initialize();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void initialize() {
         String[] titlesList = {
                 getResources().getString(R.string.lesson_button1),
                 getResources().getString(R.string.lesson_button2),
@@ -41,7 +61,7 @@ public class PDFLessonsListActivity extends Activity {
                 getResources().getString(R.string.lesson_button10),
                 getResources().getString(R.string.lesson_button11)
         };
-        Button[] buttons= {
+        Button[] buttons = {
                 findViewById(R.id.lessonButton1),
                 findViewById(R.id.lessonButton2),
                 findViewById(R.id.lessonButton3),
@@ -55,23 +75,24 @@ public class PDFLessonsListActivity extends Activity {
                 findViewById(R.id.lessonButton11)
         };
 
+        sharedPreferences = getSharedPreferences(PROGRESS_PREFS, Context.MODE_PRIVATE);
+
         int i;
-        for (i = 0; i < filesList.length; i++){
+        for (i = 0; i < filesList.length; i++) {
             Button button = buttons[i];
+            String title = titlesList[i];
+            int progress = sharedPreferences.getInt(filesList[i] + "_PROGRESS", 0);
+            button.setText(Html.fromHtml(title + "<br/><small>Progress : " + progress + "%</small>"));
             final Intent intent = new Intent(this, PDFActivity.class);
+
             intent.putExtra("fileName", filesList[i]);
             intent.putExtra("title", titlesList[i]);
-            button.setOnClickListener(new View.OnClickListener(){
+            button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(intent);
                 }
             });
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

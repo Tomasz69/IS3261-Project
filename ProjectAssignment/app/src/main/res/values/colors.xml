@@ -15,5 +15,6 @@
     <color name="dull_green">#7DC832</color>
     <color name="dark_pink">#F71976</color>
     <color name="red">#FF0000</color>
+    <color name="black">#000000</color>
 
 </resources>

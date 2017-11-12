@@ -50,6 +50,7 @@
     <string name="lesson_title">Lessons</string>
     <string name="revision_title">Revision Quiz</string>
     <string name="challenge_title">Challenge Quiz</string>
+    <string name="challenge_list_title">List of Challenge Questions</string>
     <string name="useful_title">Useful Links</string>
     <string name="past_title">Leaderboard</string>
 

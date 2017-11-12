@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -216,5 +217,12 @@ public class LoginActivity extends Activity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void onClick_GoToMainActivity(View view) {
+        if (Profile.getCurrentProfile() != null){
+            Intent mainPage = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(mainPage);
+        }
     }
 }

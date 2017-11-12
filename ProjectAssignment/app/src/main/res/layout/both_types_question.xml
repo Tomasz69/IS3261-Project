@@ -119,6 +119,7 @@
         android:onClick="onClick_SubmitAnswer"
         android:text="@string/text_default"
         android:textAllCaps="false"
+        android:textStyle="bold"
         android:textColor="@color/white" />
 
     <Button
@@ -131,6 +132,7 @@
         android:onClick="onClick_SubmitAnswer"
         android:text="@string/text_default"
         android:textAllCaps="false"
+        android:textStyle="bold"
         android:textColor="@color/white" />
 
     <Button
@@ -143,6 +145,7 @@
         android:onClick="onClick_SubmitAnswer"
         android:text="@string/text_default"
         android:textAllCaps="false"
+        android:textStyle="bold"
         android:textColor="@color/white" />
 
     <Button
@@ -154,6 +157,7 @@
         android:onClick="onClick_SubmitAnswer"
         android:text="@string/text_default"
         android:textAllCaps="false"
+        android:textStyle="bold"
         android:textColor="@color/white" />
 
 </LinearLayout>
