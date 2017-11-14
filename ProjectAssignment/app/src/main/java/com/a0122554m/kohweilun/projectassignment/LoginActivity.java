@@ -118,6 +118,13 @@ public class LoginActivity extends Activity {
         }
     }
 
+    public void onClick_NoInternetAccess(View view){
+        SharedPreferences.Editor editor = appPreferences.edit();
+        editor.putBoolean("no_internet_access", true);
+        editor.commit();
+        Intent mainPage = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(mainPage);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

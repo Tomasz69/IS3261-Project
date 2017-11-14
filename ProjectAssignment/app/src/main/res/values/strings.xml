@@ -84,8 +84,9 @@
     <string name="useful_desc3">Welcome to the open-source CodePath Android Cliffnotes! Our goal is to become the central crowdsourced resource for complete and up-to-date practical Android developer guides for any topic.</string>
     <string name="useful_desc4">200 video tutorials that focus on individual aspects of Android development, starting with downloading and installing the SDK. Most videos are around 5 minutes long so they can be enjoyed during a short break.</string>
     <string name="useful_desc5">Derek has posted video tutorials on a number of subjects. Currently there are 26 tutorials on Android development.</string>
-
     <string name="action_example">Example action</string>
-
     <string name="action_settings">Settings</string>
+    <string name="no_internet_button">Use App Without Accessing Internet</string>
+    <string name="enable_internet">"Enable App's Access to Internet"</string>
+    <string name="disable_internet">"Disable App's Access to Internet"</string>
 </resources>

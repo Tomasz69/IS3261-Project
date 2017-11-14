@@ -1,11 +1,15 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
@@ -33,6 +37,9 @@ public class MainActivity extends Activity {
     CallbackManager callbackManager;
     ProfileTracker profileTracker;
     private static final String FB_SHAREDPREF_FOR_APP = "FbSharedPrefForApp";
+    private static final String PROGRESS_PREFS = "progress_state";
+    private SharedPreferences appPreferences;
+    private SharedPreferences progressPreferences;
 
     private String[] filesList = {
             "lesson01_introduction.pdf",
@@ -47,12 +54,48 @@ public class MainActivity extends Activity {
             "lesson10_location_and_map.pdf",
             "lesson11_qr_codes.pdf"
     };
+    Button setInternetAccessButton;
+
+    public void onClick_ToggleInternetAccess(View view) {
+        SharedPreferences.Editor editor = appPreferences.edit();
+        if (appPreferences.getBoolean("no_internet_access", false)) {
+            //pressed enable button
+            editor.putBoolean("no_internet_access", false);
+            editor.commit();
+            setInternetAccessButton.setText(getResources().getString(R.string.disable_internet));
+            if (appPreferences.getString("email", null) == null) {
+                Toast.makeText(this, "You need to log in to facebook to enable internet access for the app.",
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
+        } else {
+            //pressed disable button
+            editor.putBoolean("no_internet_access", true);
+            editor.commit();
+            setInternetAccessButton.setText(getResources().getString(R.string.enable_internet));
+            Toast.makeText(this, "Enable internet access and log in to facebook to sync your progress to the cloud.",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setTitle(R.string.main_title);
+        appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
+        progressPreferences = getSharedPreferences(PROGRESS_PREFS, MODE_PRIVATE);
+        setInternetAccessButton = findViewById(R.id.setInternetAccess);
+
+        if (appPreferences.getBoolean("no_internet_access", false)) {
+            //show enable button
+            setInternetAccessButton.setText(getResources().getString(R.string.enable_internet));
+            Toast.makeText(this, "Enable internet access and log in to facebook to sync your progress to the cloud.",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            //show disable button
+            setInternetAccessButton.setText(getResources().getString(R.string.disable_internet));
+        }
         // Set up button for log out.
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
@@ -64,33 +107,35 @@ public class MainActivity extends Activity {
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 // App code
                 //when user clicks on log out
-                if (currentProfile == null){
+                if (currentProfile == null) {
                     Toast.makeText(MainActivity.this, "FB Logout success!", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE).edit();
                     editor.putString("email", null);
                     editor.commit();
-                    Intent loginPage = new Intent(getApplicationContext(),LoginActivity.class);
+                    Intent loginPage = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(loginPage);
                 }
             }
         };
-
-//        syncLessonProgress();
-//        syncRevisionProgress();
+        WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        String BSSID = wifiInfo.getBSSID();
+        //test again in school
+        //setInternetAccessButton.setText(BSSID);
+        if (BSSID.equals("e6:a7:a0:b9:28:50")) {
+            syncLessonProgress();
+            syncRevisionProgress();
+        }
     }
 
-    private void syncLessonProgress(){
-
-        String FB_SHAREDPREF_FOR_APP = "FbSharedPrefForApp";
-        String PROGRESS_PREFS = "progress_state";
-        SharedPreferences appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
-        SharedPreferences progressPreferences = getSharedPreferences(PROGRESS_PREFS, MODE_PRIVATE);
+    private void syncLessonProgress() {
+        Toast.makeText(this, "Sync lessons called",Toast.LENGTH_SHORT).show(); //testing
         JSONArray local_lesson_progress_list = new JSONArray();
 
         int i;
         int user_id = appPreferences.getInt("user_id", 0);
         System.out.println("User ID at lesson list:" + user_id);
-        for (i = 0; i < filesList.length; i++){
+        for (i = 0; i < filesList.length; i++) {
             String title = filesList[i];
             int lastSeen = progressPreferences.getInt(title + "_LASTSEEN", 0);
             int furthest = progressPreferences.getInt(title + "_FURTHEST", 0);
@@ -126,7 +171,7 @@ public class MainActivity extends Activity {
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setRequestProperty( "Content-Type", "application/json; charset=UTF-8" );
+                httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 //httpURLConnection.setRequestProperty("Accept", "application/json");
                 OutputStream os = httpURLConnection.getOutputStream();
                 OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
@@ -145,8 +190,7 @@ public class MainActivity extends Activity {
                 }
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        "Warning: Connect to the internet to save your progress and high scores to the cloud!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Warning: Connect to the internet to save your progress and high scores to the cloud!", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             } finally {
                 assert httpURLConnection != null;
@@ -158,13 +202,6 @@ public class MainActivity extends Activity {
 
         public void onPostExecute(String result) {
             try {
-                System.out.println("Raw result: " +result);
-                Boolean success = Boolean.valueOf(result);
-                if (success){
-                    System.out.println("Processing result possible.");
-                } else {
-                    System.out.println("Gibberish produced.");
-                }
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
@@ -172,16 +209,13 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void syncRevisionProgress(){
-        String FB_SHAREDPREF_FOR_APP = "FbSharedPrefForApp";
-        String PROGRESS_PREFS = "progress_state";
-        SharedPreferences appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
-        SharedPreferences progressPreferences = getSharedPreferences(PROGRESS_PREFS, MODE_PRIVATE);
+    private void syncRevisionProgress() {
+        Toast.makeText(this, "Sync revision called",Toast.LENGTH_SHORT).show(); //testing
         JSONArray local_revision_progress_list = new JSONArray();
 
         int i;
         int user_id = appPreferences.getInt("user_id", 0);
-        for (i = 0; i < filesList.length; i++){
+        for (i = 0; i < filesList.length; i++) {
             String title = filesList[i];
             int highScore = progressPreferences.getInt(title + "_highscore", 0);
             JSONObject latest_revision_progress = new JSONObject();
@@ -215,7 +249,7 @@ public class MainActivity extends Activity {
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setRequestProperty( "Content-Type", "application/json; charset=UTF-8" );
+                httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 //httpURLConnection.setRequestProperty("Accept", "application/json");
                 OutputStream os = httpURLConnection.getOutputStream();
                 OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
@@ -234,8 +268,7 @@ public class MainActivity extends Activity {
                 }
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        "Warning: Connect to the internet to save your progress and high scores to the cloud!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Warning: Connect to the internet to save your progress and high scores to the cloud!", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             } finally {
                 assert httpURLConnection != null;
@@ -247,13 +280,6 @@ public class MainActivity extends Activity {
 
         public void onPostExecute(String result) {
             try {
-                System.out.println("Raw result: " +result);
-                Boolean success = Boolean.valueOf(result);
-                if (success){
-                    System.out.println("Processing result possible.");
-                } else {
-                    System.out.println("Gibberish produced.");
-                }
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
                 e.printStackTrace();
@@ -294,17 +320,17 @@ public class MainActivity extends Activity {
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
     }
 
-    public void onClick_GoToLessonList(View view){
+    public void onClick_GoToLessonList(View view) {
         Intent lessonListIntent = new Intent(this, PDFLessonsListActivity.class);
         startActivity(lessonListIntent);
     }
 
-    public void onClick_GoToChallengeQuizCodeActivity(View view){
+    public void onClick_GoToChallengeQuizCodeActivity(View view) {
         Intent challengeCode = new Intent(this, ChallengeQuizCodeActivity.class);
         startActivity(challengeCode);
     }
 
-    public void onClick_GoToPastChallengeResultsActivity(View view){
+    public void onClick_GoToPastChallengeResultsActivity(View view) {
         Intent challengeResults = new Intent(this, PastChallengeResultsActivity.class);
         startActivity(challengeResults);
     }

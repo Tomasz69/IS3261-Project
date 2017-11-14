@@ -8,6 +8,19 @@
     android:orientation="vertical"
     tools:context="com.a0122554m.kohweilun.projectassignment.MainActivity">
 
+    <Button
+        android:id="@+id/setInternetAccess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@color/light_grey"
+        android:textColor="@color/lime_green"
+        android:text="@string/no_internet_button"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:onClick="onClick_ToggleInternetAccess"/>
+
     <!-- facebook logout button -->
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
