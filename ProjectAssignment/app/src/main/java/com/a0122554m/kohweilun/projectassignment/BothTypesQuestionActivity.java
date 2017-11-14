@@ -90,7 +90,7 @@ public class BothTypesQuestionActivity extends Activity {
             textViewTime.setVisibility(View.INVISIBLE);
             questionText_tv.setText("");
             questionNum_tv.setText("Question:");
-            questionNum_tv.setTextSize(27);
+            questionNum_tv.setTextSize(22);
             scoreTextView.setText("");
             scoreView.setText("");
             updateQuestion();

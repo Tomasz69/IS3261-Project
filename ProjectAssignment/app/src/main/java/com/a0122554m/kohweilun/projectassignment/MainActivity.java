@@ -125,11 +125,15 @@ public class MainActivity extends Activity {
             WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String BSSID = wifiInfo.getBSSID();
-            //test again in school
+            // for testing purpose
             //setInternetAccessButton.setText(BSSID);
-            if (BSSID.equals("e6:a7:a0:b9:28:50")) {
-                syncLessonProgress();
-                syncRevisionProgress();
+            if (BSSID != null) {
+                if (BSSID.equals("e6:a7:a0:b9:28:50")) {
+                    syncLessonProgress();
+                    syncRevisionProgress();
+                } else {
+                    Toast.makeText(this, "Apologies! You can only sync your progress when you are connected to the Wi-Fi in our training premises", Toast.LENGTH_LONG).show();
+                }
             } else {
                 Toast.makeText(this, "Apologies! You can only sync your progress when you are connected to the Wi-Fi in our training premises", Toast.LENGTH_LONG).show();
             }
