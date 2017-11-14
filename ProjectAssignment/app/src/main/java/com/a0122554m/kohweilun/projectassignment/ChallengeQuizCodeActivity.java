@@ -47,8 +47,13 @@ public class ChallengeQuizCodeActivity extends Activity {
         EditText challengeCodeField = findViewById(R.id.challengeCodeText);
         challengeCode = challengeCodeField.getText().toString();
         GetQuestionsAsyncTask getQuestionsAsyncTask = new GetQuestionsAsyncTask();
-        getQuestionsAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetAllQuestionsByCode?_question_code="
-                + challengeCode + "&user_id=" + user_id);
+
+        if (!challengeCode.equals("hardcode")) {
+            getQuestionsAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetAllQuestionsByCode?_question_code="
+                    + challengeCode + "&user_id=" + user_id);
+        } else{
+            
+        }
     }
 
     private void GoToList() {

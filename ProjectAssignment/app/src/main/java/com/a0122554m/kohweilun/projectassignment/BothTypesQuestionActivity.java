@@ -51,7 +51,6 @@ public class BothTypesQuestionActivity extends Activity {
     private int score = 0;
     private int questionNumber = 0;
     private String answer;
-    private String explanation = "Explanation goes here.";
 
     private ArrayList<Integer> randomQuestions = new ArrayList<Integer>();
 
@@ -136,10 +135,20 @@ public class BothTypesQuestionActivity extends Activity {
 
         if (challengeQuiz) {
             questionView.setText(QUESTION);
-            buttonChoice1.setText(ANSWERS[randomOptions.get(0)]);
-            buttonChoice2.setText(ANSWERS[randomOptions.get(1)]);
-            buttonChoice3.setText(ANSWERS[randomOptions.get(2)]);
-            buttonChoice4.setText(ANSWERS[randomOptions.get(3)]);
+            final Button[] buttonChoices = {buttonChoice1, buttonChoice2, buttonChoice3, buttonChoice4};
+
+            for (int i=0; i < buttonChoices.length; i++){
+                final Button buttonChoice = buttonChoices[i];
+                final String answer = ANSWERS[randomOptions.get(i)].split("-")[0];
+                final String explanation = ANSWERS[randomOptions.get(i)].split("-")[1];
+                buttonChoice.setText(answer);
+                buttonChoice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onClick_SubmitAnswer(buttonChoice, answer, explanation);
+                    }
+                });
+            }
         } else {
             if (questionNumber < revisionQuestionBank.getNumQuestions()) {
                 // call to initialize the progress bar values
@@ -149,11 +158,21 @@ public class BothTypesQuestionActivity extends Activity {
 
                 updateQuestionCount(questionNumber+1);
                 questionView.setText(revisionQuestionBank.getQuestion(randomQuestions.get(questionNumber)));
-                buttonChoice1.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(0)));
-                buttonChoice2.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(1)));
-                buttonChoice3.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(2)));
-                buttonChoice4.setText(revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), randomOptions.get(3)));
-                answer = revisionQuestionBank.getCorrectAnswer(randomQuestions.get(questionNumber));
+
+                final Button[] buttonChoices = {buttonChoice1, buttonChoice2, buttonChoice3, buttonChoice4};
+
+                for (int i=0; i < buttonChoices.length; i++){
+                    final Button buttonChoice = buttonChoices[i];
+                    final String answer = revisionQuestionBank.getCorrectAnswer(randomQuestions.get(questionNumber));
+                    final String explanation = ANSWERS[randomOptions.get(i)].split("-")[1];
+                    buttonChoice.setText(answer);
+                    buttonChoice.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onClick_SubmitAnswer(buttonChoice, answer, explanation);
+                        }
+                    });
+                }
                 questionNumber++;
             } else {
                 stopCountDownTimer();
@@ -179,9 +198,7 @@ public class BothTypesQuestionActivity extends Activity {
         questionNum_tv.setText("" + question + " / " + revisionQuestionBank.getNumQuestions());
     }
 
-    public void onClick_SubmitAnswer(View view) {
-        Button chosenChoice = (Button) view;
-
+    public void onClick_SubmitAnswer(Button _button, String _answer, String _explanation) {
         if (challengeQuiz) {
             final String CHALLENGE_PREFS = "challenge_state";
             SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
@@ -190,21 +207,21 @@ public class BothTypesQuestionActivity extends Activity {
             editor.commit();
             int currentScore = challengePreferences.getInt(CHALLENGE_CODE + "SCORE", 0);
             System.out.println("Current score before marking question: " + currentScore);
-            if (chosenChoice.getText().equals(CORRECT)) {
-                view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
+            if (_answer.equals(CORRECT)) {
+                _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
 //                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
                 currentScore++;
                 editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
                 editor.commit();
                 System.out.println("Current score after marking question correct: " + currentScore);
 
-                showMyDialog(this, "Correct!\n\n" + explanation);
+                showMyDialog(this, "Correct!\n\n" + _explanation);
             } else {
-                view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
+                _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
 //                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
                 System.out.println("Current score after marking question wrong: " + currentScore);
 
-                showMyDialog(this, "Wrong!\n\n" + explanation);
+                showMyDialog(this, "Wrong!\n\n" + _explanation);
             }
 //            Intent challengeQuizList = new Intent(this, ChallengeQuizQuestionListActivity.class);
 //            challengeQuizList.putExtra("challengeQuizCode", CHALLENGE_CODE);
@@ -220,15 +237,15 @@ public class BothTypesQuestionActivity extends Activity {
         } else {
             stopCountDownTimer();
 
-            if (chosenChoice.getText().equals(answer)) {
-                view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
+            if (_answer.equals(answer)) {
+                _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
                 score++;
 //                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
-                showMyDialog(this, "Correct!\n\n" + explanation);
+                showMyDialog(this, "Correct!\n\n" + _explanation);
             } else {
-                view.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
+                _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
 //                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
-                showMyDialog(this, "Wrong!\n\n" + explanation);
+                showMyDialog(this, "Wrong!\n\n" + _explanation);
             }
 
 //            Handler handler = new Handler();

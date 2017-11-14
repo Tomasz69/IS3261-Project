@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
     private static final String PROGRESS_PREFS = "progress_state";
     private SharedPreferences appPreferences;
     private SharedPreferences progressPreferences;
+    LoginButton loginButton;
 
     private String[] filesList = {
             "lesson01_introduction.pdf",
@@ -64,16 +65,19 @@ public class MainActivity extends Activity {
             editor.commit();
             setInternetAccessButton.setText(getResources().getString(R.string.disable_internet));
             if (appPreferences.getString("email", null) == null) {
-                Toast.makeText(this, "You need to log in to facebook to enable internet access for the app.",
+                Toast.makeText(this, "You need to log in to facebook to enable access Web APIs for the app.",
                         Toast.LENGTH_LONG).show();
                 finish();
+            } else {
+                loginButton.setVisibility(View.VISIBLE);
             }
         } else {
             //pressed disable button
+            loginButton.setVisibility(View.INVISIBLE);
             editor.putBoolean("no_internet_access", true);
             editor.commit();
             setInternetAccessButton.setText(getResources().getString(R.string.enable_internet));
-            Toast.makeText(this, "Enable internet access and log in to facebook to sync your progress to the cloud.",
+            Toast.makeText(this, "Enable access to Web APIs and log in to facebook to sync your progress to the cloud.",
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -87,21 +91,11 @@ public class MainActivity extends Activity {
         progressPreferences = getSharedPreferences(PROGRESS_PREFS, MODE_PRIVATE);
         setInternetAccessButton = findViewById(R.id.setInternetAccess);
 
-        if (appPreferences.getBoolean("no_internet_access", false)) {
-            //show enable button
-            setInternetAccessButton.setText(getResources().getString(R.string.enable_internet));
-            Toast.makeText(this, "Enable internet access and log in to facebook to sync your progress to the cloud.",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            //show disable button
-            setInternetAccessButton.setText(getResources().getString(R.string.disable_internet));
-        }
         // Set up button for log out.
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
         FacebookSdk.sdkInitialize(this.getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
@@ -117,14 +111,28 @@ public class MainActivity extends Activity {
                 }
             }
         };
-        WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        String BSSID = wifiInfo.getBSSID();
-        //test again in school
-        //setInternetAccessButton.setText(BSSID);
-        if (BSSID.equals("e6:a7:a0:b9:28:50")) {
-            syncLessonProgress();
-            syncRevisionProgress();
+
+        if (appPreferences.getBoolean("no_internet_access", false)) {
+            //show enable button
+            setInternetAccessButton.setText(getResources().getString(R.string.enable_internet));
+            loginButton.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, "Enable internet access and log in to facebook to sync your progress to the cloud.",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            //show disable button
+            setInternetAccessButton.setText(getResources().getString(R.string.disable_internet));
+            loginButton.setVisibility(View.VISIBLE);
+            WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            String BSSID = wifiInfo.getBSSID();
+            //test again in school
+            //setInternetAccessButton.setText(BSSID);
+            if (BSSID.equals("e6:a7:a0:b9:28:50")) {
+                syncLessonProgress();
+                syncRevisionProgress();
+            } else {
+                Toast.makeText(this, "Apologies! You can only sync your progress when you are connected to the Wi-Fi in our training premises", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -190,7 +198,6 @@ public class MainActivity extends Activity {
                 }
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
-                //Toast.makeText(getApplicationContext(), "Warning: Connect to the internet to save your progress and high scores to the cloud!", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             } finally {
                 assert httpURLConnection != null;
@@ -268,7 +275,6 @@ public class MainActivity extends Activity {
                 }
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
-                //Toast.makeText(getApplicationContext(),"Warning: Connect to the internet to save your progress and high scores to the cloud!", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             } finally {
                 assert httpURLConnection != null;
