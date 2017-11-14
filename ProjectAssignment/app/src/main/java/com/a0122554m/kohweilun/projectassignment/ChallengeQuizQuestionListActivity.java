@@ -1,6 +1,8 @@
 package com.a0122554m.kohweilun.projectassignment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -48,7 +50,7 @@ public class ChallengeQuizQuestionListActivity extends Activity {
         setContentView(R.layout.challenge_quiz_question_list);
         this.setTitle(R.string.challenge_list_title);
         appPreferences = getSharedPreferences(FB_SHAREDPREF_FOR_APP, MODE_PRIVATE);
-        user_id = appPreferences.getInt("user_id",0);
+        user_id = appPreferences.getInt("user_id", 0);
         timerTextView = (TextView) findViewById(R.id.timerTextView);
 
         question_nums = getIntent().getStringArrayExtra("question_nums");
@@ -89,7 +91,38 @@ public class ChallengeQuizQuestionListActivity extends Activity {
         super.onDestroy();
     }
 
-    public void onClick_endParticipation(View view){
+    @Override
+    public void onBackPressed() {
+        // Do nothing, i.e. do not allow user to exit and revisit quiz, to reset timer;
+    }
+
+    public void onClick_endParticipation(View view) {
+        showAlertDialog();
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder ad_builder = new AlertDialog.Builder(this);
+        ad_builder.setMessage("Are you sure you want to end this Challenge participation?").setCancelable(false)
+                .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                })
+                .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                        endParticipation();
+                    }
+                });
+
+        AlertDialog alertDialog = ad_builder.create();
+        alertDialog.setTitle("Confirmation");
+        alertDialog.show();
+    }
+
+    private void endParticipation() {
         final String CHALLENGE_PREFS = "challenge_state";
         SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
         int finalScore = challengePreferences.getInt(challengeQuizCode + "SCORE", 0);
@@ -139,7 +172,6 @@ public class ChallengeQuizQuestionListActivity extends Activity {
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.challenge_list_end_failure), Toast.LENGTH_LONG).show();
-
                 }
             } catch (Exception e) {
                 System.out.println("Error : " + e.getMessage());
@@ -163,7 +195,7 @@ public class ChallengeQuizQuestionListActivity extends Activity {
         return null;
     }
 
-    private void setUpList(){
+    private void setUpList() {
         ChallengeQuestionListAdapter adapter = new ChallengeQuestionListAdapter(this, question_nums, question_types);
         ListView list = findViewById(R.id.questions_list);
         list.setAdapter(adapter);

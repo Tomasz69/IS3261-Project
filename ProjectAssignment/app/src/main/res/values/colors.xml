@@ -10,6 +10,7 @@
     <color name="darker_grey">#232C3D</color>
     <color name="dark_grey">#2F3A4F</color>
     <color name="light_grey">#525F78</color>
+    <color name="lighter_grey">#C8C8C8</color>
     <color name="lime_green">#64FF6C</color>
     <color name="green">#3FD747</color>
     <color name="dull_green">#7DC832</color>

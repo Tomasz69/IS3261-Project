@@ -23,7 +23,9 @@
         android:id="@+id/questions_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="12"/>
+        android:layout_weight="12"
+        android:divider="@color/light_grey"
+        android:dividerHeight="1dp"/>
 
     <Button
         android:id="@+id/endChallengeButton"
