@@ -201,25 +201,32 @@ public class BothTypesQuestionActivity extends Activity {
     public void onClick_SubmitAnswer(Button _button, String _answer, String _explanation) {
         if (challengeQuiz) {
             final String CHALLENGE_PREFS = "challenge_state";
-            SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = challengePreferences.edit();
-            editor.putBoolean(CHALLENGE_CODE + QUESTIONID + "DONE", true);
-            editor.commit();
-            int currentScore = challengePreferences.getInt(CHALLENGE_CODE + "SCORE", 0);
-            System.out.println("Current score before marking question: " + currentScore);
-            if (_answer.equals(CORRECT)) {
-                _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
-                currentScore++;
-                editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
+            if (!CHALLENGE_CODE.equals("hardcode") ) {
+                SharedPreferences challengePreferences = getSharedPreferences(CHALLENGE_PREFS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = challengePreferences.edit();
+                editor.putBoolean(CHALLENGE_CODE + QUESTIONID + "DONE", true);
                 editor.commit();
-                System.out.println("Current score after marking question correct: " + currentScore);
 
-                showMyDialog(this, "Correct!\n\n" + _explanation);
+                int currentScore = challengePreferences.getInt(CHALLENGE_CODE + "SCORE", 0);
+                System.out.println("Current score before marking question: " + currentScore);
+                if (_answer.equals(CORRECT)) {
+                    _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
+                    currentScore++;
+                    editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
+                    editor.commit();
+                    showMyDialog(this, "Correct!\n\n" + _explanation);
+                } else {
+                    _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
+                    showMyDialog(this, "Wrong!\n\n" + _explanation);
+                }
             } else {
-                _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
-                System.out.println("Current score after marking question wrong: " + currentScore);
-
-                showMyDialog(this, "Wrong!\n\n" + _explanation);
+                if (_answer.equals(CORRECT)) {
+                    _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
+                    showMyDialog(this, "Correct!\n\n" + _explanation);
+                } else {
+                    _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
+                    showMyDialog(this, "Wrong!\n\n" + _explanation);
+                }
             }
         } else {
             stopCountDownTimer();
