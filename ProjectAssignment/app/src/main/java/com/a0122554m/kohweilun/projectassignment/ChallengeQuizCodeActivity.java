@@ -46,13 +46,20 @@ public class ChallengeQuizCodeActivity extends Activity {
     public void onClick_GoToChallengeQuizList(View view) {
         EditText challengeCodeField = findViewById(R.id.challengeCodeText);
         challengeCode = challengeCodeField.getText().toString();
-        GetQuestionsAsyncTask getQuestionsAsyncTask = new GetQuestionsAsyncTask();
 
         if (!challengeCode.equals("hardcode")) {
+            GetQuestionsAsyncTask getQuestionsAsyncTask = new GetQuestionsAsyncTask();
             getQuestionsAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetAllQuestionsByCode?_question_code="
                     + challengeCode + "&user_id=" + user_id);
         } else{
-            
+            HardCodedQuestionBank hardCodedQuestionBank = new HardCodedQuestionBank();
+            question_nums = hardCodedQuestionBank.getQuestion_nums();
+            question_ids = hardCodedQuestionBank.getQuestion_ids();
+            question_titles = hardCodedQuestionBank.getQuestion_titles();
+            question_answers = hardCodedQuestionBank.getQuestion_answers();
+            question_corrects = hardCodedQuestionBank.getQuestion_corrects();
+            question_types = hardCodedQuestionBank.getQuestion_types();
+            GoToList();
         }
     }
 

@@ -160,16 +160,16 @@ public class BothTypesQuestionActivity extends Activity {
                 questionView.setText(revisionQuestionBank.getQuestion(randomQuestions.get(questionNumber)));
 
                 final Button[] buttonChoices = {buttonChoice1, buttonChoice2, buttonChoice3, buttonChoice4};
-
+                answer = revisionQuestionBank.getCorrectAnswer(randomQuestions.get(questionNumber));
                 for (int i=0; i < buttonChoices.length; i++){
                     final Button buttonChoice = buttonChoices[i];
-                    final String answer = revisionQuestionBank.getCorrectAnswer(randomQuestions.get(questionNumber));
-                    final String explanation = ANSWERS[randomOptions.get(i)].split("-")[1];
-                    buttonChoice.setText(answer);
+                    final String chosenAnswer = revisionQuestionBank.getChoice(randomQuestions.get(questionNumber), i);
+                    final String explanation = chosenAnswer.split("-")[1];
+                    buttonChoice.setText(chosenAnswer.split("-")[0]);
                     buttonChoice.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            onClick_SubmitAnswer(buttonChoice, answer, explanation);
+                            onClick_SubmitAnswer(buttonChoice, chosenAnswer.split("-")[0], explanation);
                         }
                     });
                 }
@@ -209,7 +209,6 @@ public class BothTypesQuestionActivity extends Activity {
             System.out.println("Current score before marking question: " + currentScore);
             if (_answer.equals(CORRECT)) {
                 _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
-//                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
                 currentScore++;
                 editor.putInt(CHALLENGE_CODE + "SCORE", currentScore);
                 editor.commit();
@@ -218,44 +217,21 @@ public class BothTypesQuestionActivity extends Activity {
                 showMyDialog(this, "Correct!\n\n" + _explanation);
             } else {
                 _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
-//                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
                 System.out.println("Current score after marking question wrong: " + currentScore);
 
                 showMyDialog(this, "Wrong!\n\n" + _explanation);
             }
-//            Intent challengeQuizList = new Intent(this, ChallengeQuizQuestionListActivity.class);
-//            challengeQuizList.putExtra("challengeQuizCode", CHALLENGE_CODE);
-//            startActivity(challengeQuizList);
-
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                public void run() {
-//                    // Actions to do after specified wait time
-//                    finish();
-//                }
-//            }, WAIT_DELAY);
         } else {
             stopCountDownTimer();
 
             if (_answer.equals(answer)) {
                 _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_green);
                 score++;
-//                Toast.makeText(this, getResources().getString(R.string.question_correct), Toast.LENGTH_SHORT).show();
                 showMyDialog(this, "Correct!\n\n" + _explanation);
             } else {
                 _button.setBackgroundResource(R.drawable.drawable_rectangle_round_both_red);
-//                Toast.makeText(this, getResources().getString(R.string.question_wrong), Toast.LENGTH_SHORT).show();
                 showMyDialog(this, "Wrong!\n\n" + _explanation);
             }
-
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                public void run() {
-//                    // Actions to do after specified wait time
-//                    updateScore(score);
-//                    updateQuestion();
-//                }
-//            }, WAIT_DELAY);
         }
     }
 

@@ -128,9 +128,14 @@ public class ChallengeQuizQuestionListActivity extends Activity {
         int finalScore = challengePreferences.getInt(challengeQuizCode + "SCORE", 0);
         timer.cancel();
         timer.purge();
-        EndParticipationAsyncTask endParticipationAsyncTask = new EndParticipationAsyncTask();
-        endParticipationAsyncTask.execute("http://192.168.137.1:3000/api/Questions/endChallengeParticipation?" +
-                "_question_code=" + challengeQuizCode + "&user_id=" + user_id + "&_score=" + finalScore);
+        if (!challengeQuizCode.equals("hardcode")) {
+            EndParticipationAsyncTask endParticipationAsyncTask = new EndParticipationAsyncTask();
+            endParticipationAsyncTask.execute("http://192.168.137.1:3000/api/Questions/endChallengeParticipation?" +
+                    "_question_code=" + challengeQuizCode + "&user_id=" + user_id + "&_score=" + finalScore);
+        } else {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.challenge_list_end_success), Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     private class EndParticipationAsyncTask extends AsyncTask<String, Void, String> {

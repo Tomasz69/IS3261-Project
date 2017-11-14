@@ -124,8 +124,15 @@ public class ChallengeQuizHintActivity extends Activity implements
             }
             //beacon hint
             if (question_type == 1) {
-                GetHintAsyncTask getHintAsyncTask = new GetHintAsyncTask();
-                getHintAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetHint?_question_id=" + question_id);
+                if (!code.equals("hardcode") ) {
+                    GetHintAsyncTask getHintAsyncTask = new GetHintAsyncTask();
+                    getHintAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetHint?_question_id=" + question_id);
+                }else{
+                    location_description = "computingclocktower.jpg";
+                    location_coordinates = "B9407F30-F5F8-466E-AFF9-25556B57FE6D;17850;43121";
+                    imageView.setImageResource(R.drawable.computingclocktower);
+                    setUpBeaconOrGPSIfNeeded();
+                }
             }
             //gps hint
             if (question_type == 2) {
@@ -140,8 +147,15 @@ public class ChallengeQuizHintActivity extends Activity implements
                         .addOnConnectionFailedListener(this)
                         .build();
 
-                GetHintAsyncTask getHintAsyncTask = new GetHintAsyncTask();
-                getHintAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetHint?_question_id=" + question_id);
+                if (!code.equals("hardcode") ) {
+                    GetHintAsyncTask getHintAsyncTask = new GetHintAsyncTask();
+                    getHintAsyncTask.execute("http://192.168.137.1:3000/api/Questions/GetHint?_question_id=" + question_id);
+                }else{
+                    location_description = "NUS_School_of_Computing.jpg";
+                    location_coordinates = "1.2951;103.7738";
+                    imageView.setImageResource(R.drawable.schoolofcomputing);
+                    setUpBeaconOrGPSIfNeeded();
+                }
             }
         }
     }
